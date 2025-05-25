@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 #
 
@@ -11,11 +11,11 @@ import socket
 import ssl
 import sys
 
-from gunicorn import http
-from gunicorn.http import wsgi
-from gunicorn import sock
-from gunicorn import util
-from gunicorn.workers import base
+from gumicorn import http
+from gumicorn.http import wsgi
+from gumicorn import sock
+from gumicorn import util
+from gumicorn.workers import base
 
 
 class StopWaiting(Exception):

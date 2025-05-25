@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import os
@@ -21,12 +21,12 @@ from gevent.pool import Pool
 from gevent.server import StreamServer
 from gevent import hub, monkey, socket, pywsgi
 
-import gunicorn
-from gunicorn.http.wsgi import base_environ
-from gunicorn.sock import ssl_context
-from gunicorn.workers.base_async import AsyncWorker
+import gumicorn
+from gumicorn.http.wsgi import base_environ
+from gumicorn.sock import ssl_context
+from gumicorn.workers.base_async import AsyncWorker
 
-VERSION = "gevent/%s gunicorn/%s" % (gevent.__version__, gunicorn.__version__)
+VERSION = "gevent/%s gumicorn/%s" % (gevent.__version__, gumicorn.__version__)
 
 
 class GeventWorker(AsyncWorker):
@@ -178,7 +178,7 @@ class PyWSGIHandler(pywsgi.WSGIHandler):
 
     def get_environ(self):
         env = super().get_environ()
-        env['gunicorn.sock'] = self.socket
+        env['gumicorn.sock'] = self.socket
         env['RAW_URI'] = self.path
         return env
 

@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import io
@@ -12,8 +12,8 @@ from datetime import datetime
 from random import randint
 from ssl import SSLError
 
-from gunicorn import util
-from gunicorn.http.errors import (
+from gumicorn import util
+from gumicorn.http.errors import (
     ForbiddenProxyRequest, InvalidHeader,
     InvalidHeaderName, InvalidHTTPVersion,
     InvalidProxyLine, InvalidRequestLine,
@@ -22,9 +22,9 @@ from gunicorn.http.errors import (
     UnsupportedTransferCoding,
     ConfigurationProblem, ObsoleteFolding,
 )
-from gunicorn.http.wsgi import Response, default_environ
-from gunicorn.reloader import reloader_engines
-from gunicorn.workers.workertmp import WorkerTmp
+from gumicorn.http.wsgi import Response, default_environ
+from gumicorn.reloader import reloader_engines
+from gumicorn.workers.workertmp import WorkerTmp
 
 
 class Worker:

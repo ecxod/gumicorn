@@ -1,14 +1,14 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
-# supported gunicorn workers.
+# supported gumicorn workers.
 SUPPORTED_WORKERS = {
-    "sync": "gunicorn.workers.sync.SyncWorker",
-    "eventlet": "gunicorn.workers.geventlet.EventletWorker",
-    "gevent": "gunicorn.workers.ggevent.GeventWorker",
-    "gevent_wsgi": "gunicorn.workers.ggevent.GeventPyWSGIWorker",
-    "gevent_pywsgi": "gunicorn.workers.ggevent.GeventPyWSGIWorker",
-    "tornado": "gunicorn.workers.gtornado.TornadoWorker",
-    "gthread": "gunicorn.workers.gthread.ThreadWorker",
+    "sync": "gumicorn.workers.sync.SyncWorker",
+    "eventlet": "gumicorn.workers.geventlet.EventletWorker",
+    "gevent": "gumicorn.workers.ggevent.GeventWorker",
+    "gevent_wsgi": "gumicorn.workers.ggevent.GeventPyWSGIWorker",
+    "gevent_pywsgi": "gumicorn.workers.ggevent.GeventPyWSGIWorker",
+    "tornado": "gumicorn.workers.gtornado.TornadoWorker",
+    "gthread": "gumicorn.workers.gthread.ThreadWorker",
 }

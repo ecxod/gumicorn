@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 from functools import partial
@@ -19,8 +19,8 @@ from eventlet.greenio import GreenSocket
 import eventlet.wsgi
 import greenlet
 
-from gunicorn.workers.base_async import AsyncWorker
-from gunicorn.sock import ssl_wrap_socket
+from gumicorn.workers.base_async import AsyncWorker
+from gumicorn.sock import ssl_wrap_socket
 
 # ALREADY_HANDLED is removed in 0.30.3+ now it's `WSGI_LOCAL.already_handled: bool`
 # https://github.com/eventlet/eventlet/pull/544
@@ -71,7 +71,7 @@ def _eventlet_serve(sock, handle, concurrency):
     Serve requests forever.
 
     This code is nearly identical to ``eventlet.convenience.serve`` except
-    that it attempts to join the pool at the end, which allows for gunicorn
+    that it attempts to join the pool at the end, which allows for gumicorn
     graceful shutdowns.
     """
     pool = eventlet.greenpool.GreenPool(concurrency)

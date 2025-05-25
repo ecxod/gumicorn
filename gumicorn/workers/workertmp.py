@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import os
@@ -7,7 +7,7 @@ import time
 import platform
 import tempfile
 
-from gunicorn import util
+from gumicorn import util
 
 PLATFORM = platform.system()
 IS_CYGWIN = PLATFORM.startswith('CYGWIN')

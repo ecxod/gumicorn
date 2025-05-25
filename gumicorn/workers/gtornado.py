@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import os
@@ -13,9 +13,9 @@ import tornado.web
 import tornado.httpserver
 from tornado.ioloop import IOLoop, PeriodicCallback
 from tornado.wsgi import WSGIContainer
-from gunicorn.workers.base import Worker
-from gunicorn import __version__ as gversion
-from gunicorn.sock import ssl_context
+from gumicorn.workers.base import Worker
+from gumicorn import __version__ as gversion
+from gumicorn.sock import ssl_context
 
 
 # Tornado 5.0 updated its IOLoop, and the `io_loop` arguments to many
@@ -115,7 +115,7 @@ class TornadoWorker(Worker):
 
         # Monkey-patching HTTPConnection.finish to count the
         # number of requests being handled by Tornado. This
-        # will help gunicorn shutdown the worker if max_requests
+        # will help gumicorn shutdown the worker if max_requests
         # is exceeded.
         httpserver = sys.modules["tornado.httpserver"]
         if hasattr(httpserver, 'HTTPConnection'):
