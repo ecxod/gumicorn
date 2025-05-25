@@ -70,7 +70,7 @@ Gunicorn to trust the ``X-Forwarded-*`` headers sent by Nginx. By default,
 Gunicorn will only trust these headers if the connection comes from localhost.
 This is to prevent a malicious client from forging these headers::
 
-    $ gunicorn -w 3 --forwarded-allow-ips="10.170.3.217,10.170.3.220" test:app
+    $ gumicorn -w 3 --forwarded-allow-ips="10.170.3.217,10.170.3.220" test:app
 
 When the Gunicorn host is completely firewalled from the external network such
 that all connections come from a trusted proxy (e.g. Heroku) this value can
@@ -107,7 +107,7 @@ this::
     $ mkdir ~/venvs/
     $ virtualenv ~/venvs/webapp
     $ source ~/venvs/webapp/bin/activate
-    $ pip install gunicorn
+    $ pip install gumicorn
     $ deactivate
 
 Then you just need to use one of the three Gunicorn scripts that was installed
@@ -117,7 +117,7 @@ Note: You can force the installation of Gunicorn in your Virtualenv by
 passing ``-I`` or ``--ignore-installed`` option to pip::
 
      $ source ~/venvs/webapp/bin/activate
-     $ pip install -I gunicorn
+     $ pip install -I gumicorn
 
 Monitoring
 ==========
@@ -137,8 +137,8 @@ Using Gafferd and gaffer
 
 Gaffer_ can be used to monitor Gunicorn. A simple configuration is::
 
-    [process:gunicorn]
-    cmd = gunicorn -w 3 test:app
+    [process:gumicorn]
+    cmd = gumicorn -w 3 test:app
     cwd = /path/to/project
 
 Then you can easily manage Gunicorn using Gaffer_.
@@ -149,7 +149,7 @@ Using a Procfile
 
 Create a ``Procfile`` in your project::
 
-    gunicorn = gunicorn -w 3 test:app
+    gumicorn = gumicorn -w 3 test:app
 
 You can launch any other applications that should be launched at the same time.
 
@@ -171,16 +171,16 @@ Here is an `example service`_ definition::
 
     #!/bin/sh
 
-    GUNICORN=/usr/local/bin/gunicorn
+    GUMICORN=/usr/local/bin/gumicorn
     ROOT=/path/to/project
-    PID=/var/run/gunicorn.pid
+    PID=/var/run/gumicorn.pid
 
     APP=main:application
 
     if [ -f $PID ]; then rm $PID; fi
 
     cd $ROOT
-    exec $GUNICORN -c $ROOT/gunicorn.conf.py --pid=$PID $APP
+    exec $GUMICORN -c $ROOT/gumicorn.conf.py --pid=$PID $APP
 
 Save this as ``/etc/sv/[app_name]/run``, and make it executable
 (``chmod u+x /etc/sv/[app_name]/run``).
@@ -196,8 +196,8 @@ Supervisor
 Another useful tool to monitor and control Gunicorn is Supervisor_. A
 `simple configuration`_ is::
 
-    [program:gunicorn]
-    command=/path/to/gunicorn main:application -c /path/to/gunicorn.conf.py
+    [program:gumicorn]
+    command=/path/to/gumicorn main:application -c /path/to/gumicorn.conf.py
     directory=/path/to/project
     user=nobody
     autostart=true
@@ -223,7 +223,7 @@ Using Gunicorn with upstart is simple. In this example we will run the app
     setgid nogroup
     chdir /path/to/app/directory
 
-    exec /path/to/virtualenv/bin/gunicorn myapp:app
+    exec /path/to/virtualenv/bin/gumicorn myapp:app
 
 Systemd
 -------
@@ -234,19 +234,19 @@ and permissions control.
 
 Below are configuration files and instructions for using systemd to create
 a unix socket for incoming Gunicorn requests.  Systemd will listen on this
-socket and start gunicorn automatically in response to traffic.  Later in
+socket and start gumicorn automatically in response to traffic.  Later in
 this section are instructions for configuring Nginx to forward web traffic
 to the newly created unix socket:
 
-**/etc/systemd/system/gunicorn.service**::
+**/etc/systemd/system/gumicorn.service**::
 
     [Unit]
-    Description=gunicorn daemon
-    Requires=gunicorn.socket
+    Description=gumicorn daemon
+    Requires=gumicorn.socket
     After=network.target
 
     [Service]
-    # gunicorn can let systemd know when it is ready
+    # gumicorn can let systemd know when it is ready
     Type=notify
     NotifyAccess=main
     # the specific user that our service will run as
@@ -254,9 +254,9 @@ to the newly created unix socket:
     Group=someuser
     # this user can be transiently created by systemd
     # DynamicUser=true
-    RuntimeDirectory=gunicorn
+    RuntimeDirectory=gumicorn
     WorkingDirectory=/home/someuser/applicationroot
-    ExecStart=/usr/bin/gunicorn applicationname.wsgi
+    ExecStart=/usr/bin/gumicorn applicationname.wsgi
     ExecReload=/bin/kill -s HUP $MAINPID
     KillMode=mixed
     TimeoutStopSec=5
@@ -267,13 +267,13 @@ to the newly created unix socket:
     [Install]
     WantedBy=multi-user.target
 
-**/etc/systemd/system/gunicorn.socket**::
+**/etc/systemd/system/gumicorn.socket**::
 
     [Unit]
-    Description=gunicorn socket
+    Description=gumicorn socket
 
     [Socket]
-    ListenStream=/run/gunicorn.sock
+    ListenStream=/run/gumicorn.sock
     # Our service won't need permissions for the socket, since it
     # inherits the file descriptor by socket activation.
     # Only the nginx daemon will need access to the socket:
@@ -288,11 +288,11 @@ to the newly created unix socket:
 
 Next enable and start the socket (it will autostart at boot too)::
 
-    systemctl enable --now gunicorn.socket
+    systemctl enable --now gumicorn.socket
 
 
 Now let's see if the nginx daemon will be able to connect to the socket.
-Running ``sudo -u www-data curl --unix-socket /run/gunicorn.sock http``,
+Running ``sudo -u www-data curl --unix-socket /run/gumicorn.sock http``,
 our Gunicorn service will be automatically started and you should see some
 HTML from your server in the terminal.
 
@@ -300,9 +300,9 @@ HTML from your server in the terminal.
 
     systemd employs cgroups to track the processes of a service, so it doesn't
     need pid files. In the rare case that you need to find out the service main
-    pid, you can use ``systemctl show --value -p MainPID gunicorn.service``, but
+    pid, you can use ``systemctl show --value -p MainPID gumicorn.service``, but
     if you only want to send a signal an even better option is
-    ``systemctl kill -s HUP gunicorn.service``.
+    ``systemctl kill -s HUP gumicorn.service``.
 
 .. note::
 
@@ -322,7 +322,7 @@ socket. Edit your ``nginx.conf`` to include the following:
             listen          8000;
             server_name     127.0.0.1;
             location / {
-                proxy_pass http://unix:/run/gunicorn.sock;
+                proxy_pass http://unix:/run/gumicorn.sock;
             }
         }
     }
@@ -354,7 +354,7 @@ Logging can be configured by using various flags detailed in the
 Send the ``USR1`` signal to rotate logs if you are using the logrotate
 utility::
 
-    kill -USR1 $(cat /var/run/gunicorn.pid)
+    kill -USR1 $(cat /var/run/gumicorn.pid)
 
 .. note::
    Overriding the ``LOGGING`` dictionary requires to set
@@ -367,13 +367,13 @@ utility::
 
 .. _Nginx: https://nginx.org/
 .. _Hey: https://github.com/rakyll/hey
-.. _`example configuration`: https://github.com/benoitc/gunicorn/blob/master/examples/nginx.conf
+.. _`example configuration`: https://github.com/ecxod/gumicorn/blob/master/examples/nginx.conf
 .. _runit: http://smarden.org/runit/
-.. _`example service`: https://github.com/benoitc/gunicorn/blob/master/examples/gunicorn_rc
+.. _`example service`: https://github.com/ecxod/gumicorn/blob/master/examples/gunicorn_rc
 .. _Supervisor: http://supervisord.org/
-.. _`simple configuration`: https://github.com/benoitc/gunicorn/blob/master/examples/supervisor.conf
-.. _`configuration documentation`: http://docs.gunicorn.org/en/latest/settings.html#logging
-.. _`logging configuration file`: https://github.com/benoitc/gunicorn/blob/master/examples/logging.conf
+.. _`simple configuration`: https://github.com/ecxod/gumicorn/blob/master/examples/supervisor.conf
+.. _`configuration documentation`: http://docs.gumicorn.org/en/latest/settings.html#logging
+.. _`logging configuration file`: https://github.com/ecxod/gumicorn/blob/master/examples/logging.conf
 .. _Virtualenv: https://pypi.python.org/pypi/virtualenv
 .. _Systemd: https://www.freedesktop.org/wiki/Software/systemd/
 .. _Gaffer: https://gaffer.readthedocs.io/

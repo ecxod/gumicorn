@@ -3,10 +3,10 @@ import inspect
 
 from docutils import nodes, utils
 
-import gunicorn.config as guncfg
+import gumicorn.config as guncfg
 
 HEAD = """\
-.. Please update gunicorn/config.py instead.
+.. Please update gumicorn/config.py instead.
 
 .. _settings:
 
@@ -24,13 +24,13 @@ for reference on setting at the command line.
     ``GUNICORN_CMD_ARGS``. All available command line arguments can be used.
     For example, to specify the bind address and number of workers::
 
-        $ GUNICORN_CMD_ARGS="--bind=127.0.0.1 --workers=3" gunicorn app:app
+        $ GUNICORN_CMD_ARGS="--bind=127.0.0.1 --workers=3" gumicorn app:app
 
     .. versionadded:: 19.7
 
 """
-ISSUE_URI = 'https://github.com/benoitc/gunicorn/issues/%s'
-PULL_REQUEST_URI = 'https://github.com/benoitc/gunicorn/pull/%s'
+ISSUE_URI = 'https://github.com/ecxod/gumicorn/issues/%s'
+PULL_REQUEST_URI = 'https://github.com/ecxod/gumicorn/pull/%s'
 
 
 def format_settings(app):

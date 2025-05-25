@@ -100,7 +100,7 @@ Changelog - 2019
 - Provide guidance on X-Forwarded-For access log in documentation
 - Add support for named constants in the `--ssl-version` flag
 - Clarify log format usage of header & environment in documentation
-- Fixed systemd documentation to properly setup gunicorn unix socket
+- Fixed systemd documentation to properly setup gumicorn unix socket
 - Prevent removal unix socket for reuse_port
 - Fix `ResourceWarning` when reading a Python config module
 - Remove unnecessary call to dict keys method

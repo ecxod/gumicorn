@@ -144,7 +144,7 @@ code in the master process).
 .. _Eventlet: http://eventlet.net/
 .. _Gevent: http://www.gevent.org/
 .. _Hey: https://github.com/rakyll/hey
-.. _aiohttp: https://docs.aiohttp.org/en/stable/deployment.html#nginx-gunicorn
-.. _`example`: https://github.com/benoitc/gunicorn/blob/master/examples/frameworks/flaskapp_aiohttp_wsgi.py
+.. _aiohttp: https://docs.aiohttp.org/en/stable/deployment.html#nginx-gumicorn
+.. _`example`: https://github.com/ecxod/gumicorn/blob/master/examples/frameworks/flaskapp_aiohttp_wsgi.py
 .. _Psycopg: http://initd.org/psycopg/
 .. _psycogreen: https://github.com/psycopg/psycogreen/

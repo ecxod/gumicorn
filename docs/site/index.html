@@ -7,7 +7,7 @@
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
   <link rel="alternate"
-  href="https://github.com/benoitc/gunicorn/commits/master.atom"
+  href="https://github.com/ecxod/gumicorn/commits/master.atom"
   type="application/atom+xml" title="Gunicorn commits">
 
 </head>
@@ -16,7 +16,7 @@
     <div class="logo-div">
       <div class="latest">
         Latest version: <strong><a
-            href="https://docs.gunicorn.org/en/stable/">23.0.0</a></strong>
+            href="https://docs.gumicorn.org/en/stable/">23.0.0</a></strong>
       </div>
 
       <div class="logo"><img src="images/logo.jpg" ></div>
@@ -27,8 +27,8 @@
       <div class="title"><img src="images/title.png"></div>
       <h1>Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX. It's a pre-fork worker model. The Gunicorn server is broadly compatible with various web frameworks, simply implemented, light on server resources, and fairly speedy.</h1>
       <div class="banner-button">
-        <a href="https://github.com/benoitc/gunicorn" title="View source at github" class="greenbutton">View source</a>
-        <a href="http://pypi.python.org/pypi/gunicorn/" title="Download from PyPi" class="redbutton">Download</a>
+        <a href="https://github.com/ecxod/gumicorn" title="View source at github" class="greenbutton">View source</a>
+        <a href="http://pypi.python.org/pypi/gumicorn/" title="Download from PyPi" class="redbutton">Download</a>
       </div>
     </div>
   </div>
@@ -66,10 +66,10 @@
       <div class="tab-box active" data-tab="quickstart">
         <h1>Installation</h1>
         <p>
-          Here's a quick rundown on how to get started with Gunicorn. For more details read the <a href="http://docs.gunicorn.org/en/stable/">documentation</a>.
+          Here's a quick rundown on how to get started with Gunicorn. For more details read the <a href="http://docs.gumicorn.org/en/stable/">documentation</a>.
         </p>
 <pre>
-  $ pip install gunicorn
+  $ pip install gumicorn
   $ cat myapp.py
     def app(environ, start_response):
         data = b"Hello, World!\n"
@@ -78,7 +78,7 @@
             ("Content-Length", str(len(data)))
         ])
         return iter([data])
-  $ gunicorn -w 4 myapp:app
+  $ gumicorn -w 4 myapp:app
   [2014-09-10 10:22:28 +0000] [30869] [INFO] Listening at: http://127.0.0.1:8000 (30869)
   [2014-09-10 10:22:28 +0000] [30869] [INFO] Using worker: sync
   [2014-09-10 10:22:28 +0000] [30874] [INFO] Booting worker with pid: 30874
@@ -108,48 +108,48 @@
 </pre>
         <p>Nginx is set up as reverse proxy server to a Gunicorn server running on localhost port 8000.</p>
         <p>Read the full documentation at <a
-          href="http://docs.gunicorn.org/en/latest/deploy.html">docs.gunicorn.org</a></p>
+          href="http://docs.gumicorn.org/en/latest/deploy.html">docs.gumicorn.org</a></p>
       </div>
       <div class="tab-box" data-tab="community">
         <h1>Project Management</h1>
-        <p><strong>Gunicorn</strong> uses <a href="https://github.com/benoitc/gunicorn/projects">GitHub for the project management</a>. GitHub issues are used for 3 different purposes:</p>
+        <p><strong>Gunicorn</strong> uses <a href="https://github.com/ecxod/gumicorn/projects">GitHub for the project management</a>. GitHub issues are used for 3 different purposes:</p>
         <ul>
-          <li><a href="https://github.com/benoitc/gunicorn/projects/2">Bug tracker</a></li>
-          <li><a href="https://github.com/benoitc/gunicorn/projects/4">Forum</a></li>
-          <li><a href="https://github.com/benoitc/gunicorn/projects/3">Mailing list</a>
+          <li><a href="https://github.com/ecxod/gumicorn/projects/2">Bug tracker</a></li>
+          <li><a href="https://github.com/ecxod/gumicorn/projects/4">Forum</a></li>
+          <li><a href="https://github.com/ecxod/gumicorn/projects/3">Mailing list</a>
         </ul>
-        <p>Project maintenance guidelines are available on the <a href="https://github.com/benoitc/gunicorn/wiki/Project-management">wiki</a></p>
+        <p>Project maintenance guidelines are available on the <a href="https://github.com/ecxod/gumicorn/wiki/Project-management">wiki</a></p>
         
         <h1>IRC</h1>
         <p>The Gunicorn channel is on the <a href="https://libera.chat/">Libera Chat</a> IRC
-          network. You can chat with the community on the <a href="https://web.libera.chat/?channels=#gunicorn">#gunicorn channel</a>.</p>
+          network. You can chat with the community on the <a href="https://web.libera.chat/?channels=#gumicorn">#gumicorn channel</a>.</p>
 
         <h1>Issue Tracking</h1>
-        <p>Bug reports, enhancement requests and tasks generally go in the <a  href="http://github.com/benoitc/gunicorn/issues">Github
+        <p>Bug reports, enhancement requests and tasks generally go in the <a  href="http://github.com/ecxod/gumicorn/issues">Github
           issue tracker</a>.</p>
 
         <h1>Security Issues</h1>
         <p>The security mailing list is a place to report security issues. Only
         developers are subscribed to it. To post a message to the list use the
-        address <a  href="mailto:security&#64;gunicorn.org">security&#64;gunicorn.org</a></p>
+        address <a  href="mailto:security&#64;gumicorn.org">security&#64;gumicorn.org</a></p>
 
       </div>
       <div class="tab-box" data-tab="docs">
         <h1>Documentation</h1>
-        <p>You can read more comprehensive documentation at <a href="http://docs.gunicorn.org">docs.gunicorn.org</a>.</p>
+        <p>You can read more comprehensive documentation at <a href="http://docs.gumicorn.org">docs.gumicorn.org</a>.</p>
         <p>The contents are:</p>
         <ul>
-          <li><a href="http://docs.gunicorn.org/en/latest/install.html">Installation</a></li>
+          <li><a href="http://docs.gumicorn.org/en/latest/install.html">Installation</a></li>
           <li><a
-            href="http://docs.gunicorn.org/en/latest/run.html">Running
+            href="http://docs.gumicorn.org/en/latest/run.html">Running
             Gunicorn</a></li>
           <li><a
-            href="http://docs.gunicorn.org/en/latest/configure.html">Configuration
+            href="http://docs.gumicorn.org/en/latest/configure.html">Configuration
             Overview</a></li>
-          <li><a href="http://docs.gunicorn.org/en/latest/deploy.html">Deploying Gunicorn</a></li>
-          <li><a href="http://docs.gunicorn.org/en/latest/design.html">Design</a></li>
-          <li><a href="http://docs.gunicorn.org/en/latest/faq.html">FAQ</a></li>
-          <li><a href="http://docs.gunicorn.org/en/latest/news.html">Changelog</a></li>
+          <li><a href="http://docs.gumicorn.org/en/latest/deploy.html">Deploying Gunicorn</a></li>
+          <li><a href="http://docs.gumicorn.org/en/latest/design.html">Design</a></li>
+          <li><a href="http://docs.gumicorn.org/en/latest/faq.html">FAQ</a></li>
+          <li><a href="http://docs.gumicorn.org/en/latest/news.html">Changelog</a></li>
       </div>
     </div>
   </div>
@@ -175,7 +175,7 @@
   <div class="footer">
     <div class="footer-wp">
       This open sourced site is hosted on GitHub. <br>
-      <a href="http://github.com/benoitc/gunicorn/issues">Patches, suggestions, and comments are welcome.</a>
+      <a href="http://github.com/ecxod/gumicorn/issues">Patches, suggestions, and comments are welcome.</a>
     </div>
   </div>
 

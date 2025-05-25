@@ -13,7 +13,7 @@ Gunicorn then reads configuration from a framework specific configuration
 file. Currently this only affects Paster applications.
 
 The third source of configuration information is an optional configuration file
-``gunicorn.conf.py`` searched in the current working directory or specified
+``gumicorn.conf.py`` searched in the current working directory or specified
 using a command line argument. Anything specified in this configuration file
 will override any framework specific settings.
 
@@ -41,12 +41,12 @@ Once again, in order of least to most authoritative:
     To print your resolved configuration when using the command line or the
     configuration file you can run the following command::
 
-        $ gunicorn --print-config APP_MODULE
+        $ gumicorn --print-config APP_MODULE
 
     To check your resolved configuration when using the command line or the
     configuration file you can run the following command::
 
-        $ gunicorn --check-config APP_MODULE
+        $ gumicorn --check-config APP_MODULE
 
     It also allows you to know if your application can be launched.
 
@@ -60,7 +60,7 @@ configuration file. Not all Gunicorn settings are available to be set from the
 command line. To see the full list of command line settings you can do the
 usual::
 
-    $ gunicorn -h
+    $ gumicorn -h
 
 There is also a ``--version`` flag available to the command line scripts that
 isn't mentioned in the list of :ref:`settings <settings>`.
@@ -71,7 +71,7 @@ Configuration File
 ==================
 
 The configuration file should be a valid Python source file with a **python
-extension** (e.g. `gunicorn.conf.py`). It only needs to be readable from the
+extension** (e.g. `gumicorn.conf.py`). It only needs to be readable from the
 file system. More specifically, it does not have to be on the module path
 (sys.path, PYTHONPATH). Any Python is valid. Just consider that this will be
 run every time you start Gunicorn (including when you signal Gunicorn to reload).
@@ -97,7 +97,7 @@ settings. If you have ideas for providing settings to WSGI applications or
 pulling information from Django's settings.py feel free to open an issue_ to
 let us know.
 
-.. _issue: https://github.com/benoitc/gunicorn/issues
+.. _issue: https://github.com/ecxod/gumicorn/issues
 
 Paster Applications
 -------------------
@@ -107,7 +107,7 @@ In your INI file, you can specify to use Gunicorn as the server like such:
 .. code-block:: ini
 
     [server:main]
-    use = egg:gunicorn#main
+    use = egg:gumicorn#main
     host = 192.168.0.1
     port = 80
     workers = 2

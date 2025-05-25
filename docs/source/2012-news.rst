@@ -4,7 +4,7 @@ Changelog - 2012
 0.17.0 / 2012-12-25
 -------------------
 
-- allows gunicorn to bind to multiple address
+- allows gumicorn to bind to multiple address
 - add SSL support
 - add syslog support
 - add nworkers_changed hook
@@ -22,7 +22,7 @@ Changelog - 2012
 -------------------
 
 - **Added support for Python 3.2 & 3.3**
-- Expose --pythonpath command to all gunicorn commands
+- Expose --pythonpath command to all gumicorn commands
 - Honor $PORT environment variable, useful for deployment on heroku
 - Removed support for Python 2.5
 - Make sure we reopen the logs on the console
@@ -33,14 +33,14 @@ Changelog - 2012
 0.15.0 / 2012-10-18
 -------------------
 
-- new documentation site on http://docs.gunicorn.org
-- new website on http://gunicorn.org
+- new documentation site on http://docs.gumicorn.org
+- new website on http://gumicorn.org
 - add `haproxy PROXY protocol <http://haproxy.1wt.eu/download/1.5/doc/proxy-protocol.txt>`_ support
 - add  ForwardedAllowIPS option: allows to filter Front-end's IPs
   allowed to handle X-Forwarded-* headers.
 - add callable hooks for paster config
 - add x-forwarded-proto as secure scheme default (Heroku is using this)
-- allows gunicorn to load a pre-compiled application
+- allows gumicorn to load a pre-compiled application
 - support file reopening & reexec for all loggers
 - initialize the logging config file with defaults.
 - set timeout for client socket (slow client DoS).
@@ -83,7 +83,7 @@ Changelog - 2012
 - improvement: performance of http.body.Body.readline()
 - improvement: log HTTP errors in access log like Apache
 - improvement: display traceback when the worker fails to boot
-- improvement: makes gunicorn work with gevent 1.0
+- improvement: makes gumicorn work with gevent 1.0
 - examples: websocket example now supports hybi13
 - fix: reopen log files after initialization
 - fix: websockets support

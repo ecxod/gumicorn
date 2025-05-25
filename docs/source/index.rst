@@ -2,13 +2,13 @@
 Gunicorn - WSGI server
 ======================
 
-.. image:: _static/gunicorn.png
+.. image:: _static/gumicorn.png
 
-:Website: http://gunicorn.org
-:Source code: https://github.com/benoitc/gunicorn
-:Issue tracker: https://github.com/benoitc/gunicorn/issues
-:IRC: ``#gunicorn`` on Libera Chat
-:Usage questions: https://github.com/benoitc/gunicorn/issues
+:Website: http://gumicorn.org
+:Source code: https://github.com/ecxod/gumicorn
+:Issue tracker: https://github.com/ecxod/gumicorn/issues
+:IRC: ``#gumicorn`` on Libera Chat
+:Usage questions: https://github.com/ecxod/gumicorn/issues
 
 Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX. It's a pre-fork
 worker model ported from Ruby's Unicorn project. The Gunicorn server is broadly

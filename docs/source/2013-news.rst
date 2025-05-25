@@ -5,13 +5,13 @@ Changelog - 2013
 -----------------
 
 - new: add ``-e/--env`` command line argument to pass an environment variables to
-  gunicorn
+  gumicorn
 - new: add ``--chdir`` command line argument to specified directory
   before apps loading.  - new: add wsgi.file_wrapper support in async workers
 - new: add ``--paste`` command line argument to set the paster config file
 - deprecated: the command ``gunicorn_django`` is now deprecated. You should now
   run your application with the WSGI interface installed with your project (see
-  https://docs.djangoproject.com/en/1.4/howto/deployment/wsgi/gunicorn/) for
+  https://docs.djangoproject.com/en/1.4/howto/deployment/wsgi/gumicorn/) for
   more infos.
 - deprecated:  the command ``gunicorn_paste`` is deprecated. You now should use
   the new ``--paste`` argument to set the configuration file of your paster
@@ -29,12 +29,12 @@ Changelog - 2013
 
 - new: add signals documentation
 - new: add post_worker_init hook for workers
-- new: try to use gunicorn.conf.py in current folder as the default
+- new: try to use gumicorn.conf.py in current folder as the default
   config file.
 - fix graceful timeout with the Eventlet worker
 - fix: don't raise an error when closing the socket if already closed
 - fix: fix --settings parameter for django application and try to find
-  the django settings when using the ``gunicorn`` command.
+  the django settings when using the ``gumicorn`` command.
 - fix: give the initial global_conf to paster application
 - fix: fix 'Expect: 100-continue' support on Python 3
 
@@ -61,7 +61,7 @@ service release.
 -------------------
 
 - add systemd sockets support
-- add ``python -m gunicorn.app.wsgiapp`` support
+- add ``python -m gumicorn.app.wsgiapp`` support
 - improve logger class inheritance
 - exit when the config file isn't found
 - add the -R option to enable stdio inheritance in daemon mode

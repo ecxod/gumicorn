@@ -14,7 +14,7 @@ Changelog - 2021
   accept
 - log a warning when a worker was terminated due to a signal
 - fix tornado usage with latest versions of Django 
-- add support for python -m gunicorn
+- add support for python -m gumicorn
 - fix systemd socket activation example
 - allows to set wsgi application in config file using `wsgi_app`
 - document `--timeout = 0`

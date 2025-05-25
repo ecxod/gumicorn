@@ -12,16 +12,16 @@ Commands
 ========
 
 After installing Gunicorn you will have access to the command line script
-``gunicorn``.
+``gumicorn``.
 
 .. _gunicorn-cmd:
 
-gunicorn
+gumicorn
 --------
 
 Basic usage::
 
-    $ gunicorn [OPTIONS] [WSGI_APP]
+    $ gumicorn [OPTIONS] [WSGI_APP]
 
 Where ``WSGI_APP`` is of the pattern ``$(MODULE_NAME):$(VARIABLE_NAME)``. The
 module name can be a full dotted path. The variable name refers to a WSGI
@@ -49,7 +49,7 @@ You can now run the app with the following command:
 
 .. code-block:: text
 
-    $ gunicorn --workers=2 test:app
+    $ gumicorn --workers=2 test:app
 
 The variable name can also be a function call. In that case the name
 will be imported from the module, then called to get the application
@@ -65,7 +65,7 @@ pattern.
 
 .. code-block:: text
 
-    $ gunicorn --workers=2 'test:create_app()'
+    $ gumicorn --workers=2 'test:create_app()'
 
 Positional and keyword arguments can also be passed, but it is
 recommended to load configuration from environment variables rather than
@@ -111,7 +111,7 @@ Django
 Gunicorn will look for a WSGI callable named ``application`` if not specified.
 So for a typical Django project, invoking Gunicorn would look like::
 
-    $ gunicorn myproject.wsgi
+    $ gumicorn myproject.wsgi
 
 
 .. note::
@@ -121,13 +121,13 @@ So for a typical Django project, invoking Gunicorn would look like::
    ``manage.py`` file.
 
 You can use the
-`--env <http://docs.gunicorn.org/en/latest/settings.html#raw-env>`_ option
+`--env <http://docs.gumicorn.org/en/latest/settings.html#raw-env>`_ option
 to set the path to load the settings. In case you need it you can also
 add your application path to ``PYTHONPATH`` using the
-`--pythonpath <http://docs.gunicorn.org/en/latest/settings.html#pythonpath>`_
+`--pythonpath <http://docs.gumicorn.org/en/latest/settings.html#pythonpath>`_
 option::
 
-    $ gunicorn --env DJANGO_SETTINGS_MODULE=myproject.settings myproject.wsgi
+    $ gumicorn --env DJANGO_SETTINGS_MODULE=myproject.settings myproject.wsgi
 
 Paste Deployment
 ----------------
@@ -143,7 +143,7 @@ commands, specify it as a server in your configuration file:
 .. code-block:: ini
 
     [server:main]
-    use = egg:gunicorn#main
+    use = egg:gumicorn#main
     host = 127.0.0.1
     port = 8080
     workers = 3
@@ -162,23 +162,23 @@ To use the full power of Gunicorn's reloading and hot code upgrades, use the
 `paste option`_ to run your application instead. When used this way, Gunicorn
 will use the application defined by the PasteDeploy configuration file, but
 Gunicorn will not use any server configuration defined in the file. Instead,
-`configure gunicorn`_.
+`configure gumicorn`_.
 
 For example::
 
-    $ gunicorn --paste development.ini -b :8080 --chdir /path/to/project
+    $ gumicorn --paste development.ini -b :8080 --chdir /path/to/project
 
 Or use a different application::
 
-    $ gunicorn --paste development.ini#admin -b :8080 --chdir /path/to/project
+    $ gumicorn --paste development.ini#admin -b :8080 --chdir /path/to/project
 
 With both approaches, Gunicorn will use any loggers section found in Paste
 Deployment configuration file, unless instructed otherwise by specifying
 additional `logging settings`_.
 
-.. _reload: http://docs.gunicorn.org/en/latest/settings.html#reload
-.. _daemon: http://docs.gunicorn.org/en/latest/settings.html#daemon
-.. _Server Hooks: http://docs.gunicorn.org/en/latest/settings.html#server-hooks
-.. _paste option: http://docs.gunicorn.org/en/latest/settings.html#paste
-.. _configure gunicorn: http://docs.gunicorn.org/en/latest/configure.html
-.. _logging settings: http://docs.gunicorn.org/en/latest/settings.html#logging
+.. _reload: http://docs.gumicorn.org/en/latest/settings.html#reload
+.. _daemon: http://docs.gumicorn.org/en/latest/settings.html#daemon
+.. _Server Hooks: http://docs.gumicorn.org/en/latest/settings.html#server-hooks
+.. _paste option: http://docs.gumicorn.org/en/latest/settings.html#paste
+.. _configure gumicorn: http://docs.gumicorn.org/en/latest/configure.html
+.. _logging settings: http://docs.gumicorn.org/en/latest/settings.html#logging

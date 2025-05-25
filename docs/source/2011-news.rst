@@ -37,7 +37,7 @@ Changelog - 2011
   compatible with the `apache combined log format <http://httpd.apache.org/docs/2.0/logs.html#combined>`_
 - Add the possibility to set custom SSL headers. X-Forwarded-Protocol
   and X-Forwarded-SSL are still the default
-- New `on_reload` hook to customize how gunicorn spawn new workers on
+- New `on_reload` hook to customize how gumicorn spawn new workers on
   SIGHUP
 - Handle projects with relative path in django_gunicorn command
 - Preserve path parameters in PATH_INFO

@@ -1,4 +1,4 @@
-.. Please update gunicorn/config.py instead.
+.. Please update gumicorn/config.py instead.
 
 .. _settings:
 
@@ -16,7 +16,7 @@ for reference on setting at the command line.
     ``GUNICORN_CMD_ARGS``. All available command line arguments can be used.
     For example, to specify the bind address and number of workers::
 
-        $ GUNICORN_CMD_ARGS="--bind=127.0.0.1 --workers=3" gunicorn app:app
+        $ GUNICORN_CMD_ARGS="--bind=127.0.0.1 --workers=3" gumicorn app:app
 
     .. versionadded:: 19.7
 
@@ -30,7 +30,7 @@ Config File
 
 **Command line:** ``-c CONFIG`` or ``--config CONFIG``
 
-**Default:** ``'./gunicorn.conf.py'``
+**Default:** ``'./gumicorn.conf.py'``
 
 :ref:`The Gunicorn config file<configuration_file>`.
 
@@ -39,8 +39,8 @@ A string of the form ``PATH``, ``file:PATH``, or ``python:MODULE_NAME``.
 Only has an effect when specified on the command line or as part of an
 application specific configuration.
 
-By default, a file named ``gunicorn.conf.py`` will be read from the same
-directory where gunicorn is being run.
+By default, a file named ``gumicorn.conf.py`` will be read from the same
+directory where gumicorn is being run.
 
 .. versionchanged:: 19.4
    Loading the config from a Python module requires the ``python:``
@@ -238,7 +238,7 @@ Use lowercase for header and environment variable names, and put
 
 The Error log file to write to.
 
-Using ``'-'`` for FILE makes gunicorn log to stderr.
+Using ``'-'`` for FILE makes gumicorn log to stderr.
 
 .. versionchanged:: 19.2
    Log to stderr by default.
@@ -282,15 +282,15 @@ Redirect stdout/stderr to specified file in :ref:`errorlog`.
 
 **Command line:** ``--logger-class STRING``
 
-**Default:** ``'gunicorn.glogging.Logger'``
+**Default:** ``'gumicorn.glogging.Logger'``
 
 The logger you want to use to log events in Gunicorn.
 
-The default class (``gunicorn.glogging.Logger``) handles most
+The default class (``gumicorn.glogging.Logger``) handles most
 normal usages in logging. It provides error and access logging.
 
 You can provide your own logger by giving Gunicorn a Python path to a
-class that quacks like ``gunicorn.glogging.Logger``.
+class that quacks like ``gumicorn.glogging.Logger``.
 
 .. _logconfig:
 
@@ -321,7 +321,7 @@ respectively.
 Format: https://docs.python.org/3/library/logging.config.html#logging.config.dictConfig
 
 For more context you can look at the default configuration dictionary for logging,
-which can be found at ``gunicorn.glogging.CONFIG_DEFAULTS``.
+which can be found at ``gumicorn.glogging.CONFIG_DEFAULTS``.
 
 .. versionadded:: 19.8
 
@@ -385,7 +385,7 @@ Send *Gunicorn* logs to syslog.
 
 Makes Gunicorn use the parameter as program-name in the syslog entries.
 
-All entries will be prefixed by ``gunicorn.<prefix>``. By default the
+All entries will be prefixed by ``gumicorn.<prefix>``. By default the
 program name is the name of the process.
 
 .. _syslog-facility:
@@ -487,7 +487,7 @@ If not set, the *default_proc_name* setting will be used.
 ``default_proc_name``
 ~~~~~~~~~~~~~~~~~~~~~
 
-**Default:** ``'gunicorn'``
+**Default:** ``'gumicorn'``
 
 Internal setting that is adjusted for each type of application.
 
@@ -1079,7 +1079,7 @@ For example on the command line:
 
 .. code-block:: console
 
-    $ gunicorn -b 127.0.0.1:8000 --env FOO=1 test:app
+    $ gumicorn -b 127.0.0.1:8000 --env FOO=1 test:app
 
 Or in the configuration file:
 
@@ -1404,7 +1404,7 @@ The option can be specified multiple times.
 
 The variables are passed to the PasteDeploy entrypoint. Example::
 
-    $ gunicorn -b 127.0.0.1:8000 --paste development.ini --paste-global FOO=1 --paste-global BAR=2
+    $ gumicorn -b 127.0.0.1:8000 --paste development.ini --paste-global FOO=1 --paste-global BAR=2
 
 .. versionadded:: 19.7
 
@@ -1504,7 +1504,7 @@ Transform received HTTP methods to uppercase
 
 HTTP methods are case sensitive by definition, and merely uppercase by convention.
 
-This option is provided because previous versions of gunicorn defaulted to this behaviour.
+This option is provided because previous versions of gumicorn defaulted to this behaviour.
 
 Use with care and only if necessary. Deprecated; scheduled for removal in 24.0.0
 
@@ -1542,7 +1542,7 @@ the headers defined here can not be passed directly from the client.
 Configure how header field names are mapped into environ
 
 Headers containing underscores are permitted by RFC9110,
-but gunicorn joining headers of different names into
+but gumicorn joining headers of different names into
 the same environment variable will dangerously confuse applications as to which is which.
 
 The safe default ``drop`` is to silently drop headers that cannot be unambiguously mapped.
@@ -1582,7 +1582,7 @@ A string of the form: ``HOST``, ``HOST:PORT``, ``unix:PATH``,
 
 Multiple addresses can be bound. ex.::
 
-    $ gunicorn -b 127.0.0.1:8000 -b [::1]:8000 test:app
+    $ gumicorn -b 127.0.0.1:8000 -b [::1]:8000 test:app
 
 will bind the `test:app` application on localhost both on ipv6
 and ipv4 interfaces.
@@ -1651,18 +1651,18 @@ A string referring to one of the following bundled classes:
 
 * ``sync``
 * ``eventlet`` - Requires eventlet >= 0.24.1 (or install it via
-  ``pip install gunicorn[eventlet]``)
+  ``pip install gumicorn[eventlet]``)
 * ``gevent``   - Requires gevent >= 1.4 (or install it via
-  ``pip install gunicorn[gevent]``)
+  ``pip install gumicorn[gevent]``)
 * ``tornado``  - Requires tornado >= 0.2 (or install it via
-  ``pip install gunicorn[tornado]``)
+  ``pip install gumicorn[tornado]``)
 * ``gthread``  - Python 2 requires the futures package to be installed
-  (or install it via ``pip install gunicorn[gthread]``)
+  (or install it via ``pip install gumicorn[gthread]``)
 
 Optionally, you can provide your own worker by giving Gunicorn a
-Python path to a subclass of ``gunicorn.workers.base.Worker``.
+Python path to a subclass of ``gumicorn.workers.base.Worker``.
 This alternative syntax will load the gevent class:
-``gunicorn.workers.ggevent.GeventWorker``.
+``gumicorn.workers.ggevent.GeventWorker``.
 
 .. _threads:
 

@@ -26,7 +26,7 @@ Server Stuff
 How do I reload my application in Gunicorn?
 -------------------------------------------
 
-You can gracefully reload by sending HUP signal to gunicorn::
+You can gracefully reload by sending HUP signal to gumicorn::
 
     $ kill -HUP masterpid
 
@@ -104,7 +104,7 @@ been awakened for no reason, wasting CPU cycles. At this time, Gunicorn does
 not implement any IPC solution for coordinating between worker processes. You
 may experience high load due to this problem when using many workers or
 threads. However `a work has been started
-<https://github.com/benoitc/gunicorn/issues/792>`_ to remove this issue.
+<https://github.com/ecxod/gumicorn/issues/792>`_ to remove this issue.
 
 .. _worker_class: settings.html#worker-class
 .. _`number of workers`: design.html#how-many-workers
@@ -138,7 +138,7 @@ remember that Unices treat sockets as files.
 .. warning:: ``sudo ulimit`` may not work
 
 Considering non-privileged users are not able to relax the limit, you should
-firstly switch to root user, increase the limit, then run gunicorn. Using ``sudo
+firstly switch to root user, increase the limit, then run gumicorn. Using ``sudo
 ulimit`` would not take effect.
 
 Try systemd's service unit file, or an initscript which runs as root.
@@ -205,7 +205,7 @@ create a new ``tmpfs`` mount::
 
     sudo cp /etc/fstab /etc/fstab.orig
     sudo mkdir /mem
-    echo 'tmpfs       /mem tmpfs defaults,size=64m,mode=1777,noatime,comment=for-gunicorn 0 0' | sudo tee -a /etc/fstab
+    echo 'tmpfs       /mem tmpfs defaults,size=64m,mode=1777,noatime,comment=for-gumicorn 0 0' | sudo tee -a /etc/fstab
     sudo mount /mem
 
 Check the result::
@@ -224,10 +224,10 @@ is little logging information about what happened.
 
 If you use a reverse proxy like NGINX you might see 502 returned to a client.
 
-In the gunicorn logs you might simply see ``[35] [INFO] Booting worker with pid: 35``
+In the gumicorn logs you might simply see ``[35] [INFO] Booting worker with pid: 35``
 
 It's completely normal for workers to be stop and start, for example due to
-max-requests setting. Ordinarily gunicorn will capture any signals and log something.
+max-requests setting. Ordinarily gumicorn will capture any signals and log something.
 
 This particular failure case is usually due to a SIGKILL being received, as it's
 not possible to catch this signal silence is usually a common side effect! A common
@@ -236,9 +236,9 @@ cause of SIGKILL is when OOM killer terminates a process due to low memory condi
 This is increasingly common in container deployments where memory limits are enforced
 by cgroups, you'll usually see evidence of this from dmesg::
 
-    dmesg | grep gunicorn
-    Memory cgroup out of memory: Kill process 24534 (gunicorn) score 1506 or sacrifice child
-    Killed process 24534 (gunicorn) total-vm:1016648kB, anon-rss:550160kB, file-rss:25824kB, shmem-rss:0kB
+    dmesg | grep gumicorn
+    Memory cgroup out of memory: Kill process 24534 (gumicorn) score 1506 or sacrifice child
+    Killed process 24534 (gumicorn) total-vm:1016648kB, anon-rss:550160kB, file-rss:25824kB, shmem-rss:0kB
 
 In these instances adjusting the memory limit is usually your best bet, it's also possible
 to configure OOM not to send SIGKILL by default.

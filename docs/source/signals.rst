@@ -77,18 +77,18 @@ lost. Preloaded applications will also be reloaded.
 
 First, replace the old binary with a new one, then send a ``USR2`` signal to
 the current master process. It executes a new binary whose PID file is
-postfixed with ``.2`` (e.g. ``/var/run/gunicorn.pid.2``),
+postfixed with ``.2`` (e.g. ``/var/run/gumicorn.pid.2``),
 which in turn starts a new master process and new worker processes::
 
       PID USER      PR  NI  VIRT  RES  SHR S  %CPU %MEM    TIME+  COMMAND
-    20844 benoitc   20   0 54808  11m 3352 S   0.0  0.1   0:00.36 gunicorn: master [test:app]
-    20849 benoitc   20   0 54808 9.9m 1500 S   0.0  0.1   0:00.02 gunicorn: worker [test:app]
-    20850 benoitc   20   0 54808 9.9m 1500 S   0.0  0.1   0:00.01 gunicorn: worker [test:app]
-    20851 benoitc   20   0 54808 9.9m 1500 S   0.0  0.1   0:00.01 gunicorn: worker [test:app]
-    20854 benoitc   20   0 55748  12m 3348 S   0.0  0.2   0:00.35 gunicorn: master [test:app]
-    20859 benoitc   20   0 55748  11m 1500 S   0.0  0.1   0:00.01 gunicorn: worker [test:app]
-    20860 benoitc   20   0 55748  11m 1500 S   0.0  0.1   0:00.00 gunicorn: worker [test:app]
-    20861 benoitc   20   0 55748  11m 1500 S   0.0  0.1   0:00.01 gunicorn: worker [test:app]
+    20844 ecxod   20   0 54808  11m 3352 S   0.0  0.1   0:00.36 gumicorn: master [test:app]
+    20849 ecxod   20   0 54808 9.9m 1500 S   0.0  0.1   0:00.02 gumicorn: worker [test:app]
+    20850 ecxod   20   0 54808 9.9m 1500 S   0.0  0.1   0:00.01 gumicorn: worker [test:app]
+    20851 ecxod   20   0 54808 9.9m 1500 S   0.0  0.1   0:00.01 gumicorn: worker [test:app]
+    20854 ecxod   20   0 55748  12m 3348 S   0.0  0.2   0:00.35 gumicorn: master [test:app]
+    20859 ecxod   20   0 55748  11m 1500 S   0.0  0.1   0:00.01 gumicorn: worker [test:app]
+    20860 ecxod   20   0 55748  11m 1500 S   0.0  0.1   0:00.00 gumicorn: worker [test:app]
+    20861 ecxod   20   0 55748  11m 1500 S   0.0  0.1   0:00.01 gumicorn: worker [test:app]
 
 At this point, two instances of Gunicorn are running, handling the
 incoming requests together. To phase the old instance out, you have to
@@ -113,7 +113,7 @@ If the update is successful and you want to keep the new master process, send a
 running::
 
       PID USER      PR  NI  VIRT  RES  SHR S  %CPU %MEM    TIME+  COMMAND
-    20854 benoitc   20   0 55748  12m 3348 S   0.0  0.2   0:00.45 gunicorn: master [test:app]
-    20859 benoitc   20   0 55748  11m 1500 S   0.0  0.1   0:00.02 gunicorn: worker [test:app]
-    20860 benoitc   20   0 55748  11m 1500 S   0.0  0.1   0:00.02 gunicorn: worker [test:app]
-    20861 benoitc   20   0 55748  11m 1500 S   0.0  0.1   0:00.01 gunicorn: worker [test:app]
+    20854 ecxod   20   0 55748  12m 3348 S   0.0  0.2   0:00.45 gumicorn: master [test:app]
+    20859 ecxod   20   0 55748  11m 1500 S   0.0  0.1   0:00.02 gumicorn: worker [test:app]
+    20860 ecxod   20   0 55748  11m 1500 S   0.0  0.1   0:00.02 gumicorn: worker [test:app]
+    20861 ecxod   20   0 55748  11m 1500 S   0.0  0.1   0:00.01 gumicorn: worker [test:app]

@@ -22,9 +22,9 @@ master_doc = 'index'
 # General information about the project.
 project = 'Gunicorn'
 copyright = '2009-%s, Benoit Chesneau' % time.strftime('%Y')
-# gunicorn version
-import gunicorn
-release = version = gunicorn.__version__
+# gumicorn version
+import gumicorn
+release = version = gumicorn.__version__
 
 exclude_patterns = []
 pygments_style = 'sphinx'
@@ -61,7 +61,7 @@ latex_documents = [
 
 # -- Options for manual page output --------------------------------------------
 man_pages = [
-    ('index', 'gunicorn', 'Gunicorn Documentation',
+    ('index', 'gumicorn', 'Gunicorn Documentation',
      ['Benoit Chesneau'], 1)
 ]
 

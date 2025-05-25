@@ -52,11 +52,11 @@ Changelog - 2010
 0.10.1 / 2010-08-06
 -------------------
 
-* Improve gevent's workers. Add "egg:gunicorn#gevent_wsgi" worker using
+* Improve gevent's workers. Add "egg:gumicorn#gevent_wsgi" worker using
   `gevent.wsgi <http://www.gevent.org/gevent.wsgi.html>`_ and
-  "egg:gunicorn#gevent_pywsgi" worker using `gevent.pywsgi
+  "egg:gumicorn#gevent_pywsgi" worker using `gevent.pywsgi
   <http://www.gevent.org/gevent.pywsgi.html>`_ .
-  **"egg:gunicorn#gevent"** using our own HTTP parser is still here and
+  **"egg:gumicorn#gevent"** using our own HTTP parser is still here and
   is **recommended** for normal uses. Use the "gevent.wsgi" parser if you
   need really fast connections and don't need streaming, keepalive or ssl.
 * Add pre/post request hooks
@@ -76,11 +76,11 @@ Changelog - 2010
   the preload flag can help a bit in small memory VM's.
 * Allow people to pass command line arguments to WSGI applications. See:
   `examples/alt_spec.py
-  <http://github.com/benoitc/gunicorn/raw/master/examples/alt_spec.py>`_
+  <http://github.com/ecxod/gumicorn/raw/master/examples/alt_spec.py>`_
 * Added an example gevent reloader configuration:
   `examples/example_gevent_reloader.py
-  <http://github.com/benoitc/gunicorn/blob/master/examples/example_gevent_reloader.py>`_.
-* New gevent worker "egg:gunicorn#gevent2", working with gevent.wsgi.
+  <http://github.com/ecxod/gumicorn/blob/master/examples/example_gevent_reloader.py>`_.
+* New gevent worker "egg:gumicorn#gevent2", working with gevent.wsgi.
 * Internal refactoring and various bug fixes.
 * New documentation website.
 
@@ -171,8 +171,8 @@ Changelog - 2010
 0.6.1 / 2010-02-24
 ------------------
 
-* Added gunicorn config file support for Django admin command
-* Fix gunicorn config file. -c was broken.
+* Added gumicorn config file support for Django admin command
+* Fix gumicorn config file. -c was broken.
 * Removed TTIN/TTOU from workers which blocked other signals.
 
 0.6.0 / 2010-02-22

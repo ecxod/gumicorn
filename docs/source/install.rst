@@ -8,7 +8,7 @@ Installation
 
 To install the latest released version of Gunicorn::
 
-  $ pip install gunicorn
+  $ pip install gumicorn
 
 From Source
 ===========
@@ -16,11 +16,11 @@ From Source
 You can install Gunicorn from source just as you would install any other
 Python package::
 
-    $ pip install git+https://github.com/benoitc/gunicorn.git
+    $ pip install git+https://github.com/ecxod/gumicorn.git
 
 This will allow you to keep up to date with development on GitHub::
 
-    $ pip install -U git+https://github.com/benoitc/gunicorn.git
+    $ pip install -U git+https://github.com/ecxod/gumicorn.git
 
 
 Async Workers
@@ -35,9 +35,9 @@ want to consider one of the alternate worker types.
 
     $ pip install greenlet            # Required for both
     $ pip install eventlet            # For eventlet workers
-    $ pip install gunicorn[eventlet]  # Or, using extra
+    $ pip install gumicorn[eventlet]  # Or, using extra
     $ pip install gevent              # For gevent workers
-    $ pip install gunicorn[gevent]    # Or, using extra
+    $ pip install gumicorn[gevent]    # Or, using extra
 
 .. note::
     Both require ``greenlet``, which should get installed automatically.
@@ -61,18 +61,18 @@ Most extra packages are needed for alternate worker types. See the
 `design docs`_ for more information on when you'll want to consider an
 alternate worker type.
 
-* ``gunicorn[eventlet]`` - Eventlet-based greenlets workers
-* ``gunicorn[gevent]`` - Gevent-based greenlets workers
-* ``gunicorn[gthread]`` - Threaded workers
-* ``gunicorn[tornado]`` - Tornado-based workers, not recommended
+* ``gumicorn[eventlet]`` - Eventlet-based greenlets workers
+* ``gumicorn[gevent]`` - Gevent-based greenlets workers
+* ``gumicorn[gthread]`` - Threaded workers
+* ``gumicorn[tornado]`` - Tornado-based workers, not recommended
 
 If you are running more than one instance of Gunicorn, the :ref:`proc-name`
 setting will help distinguish between them in tools like ``ps`` and ``top``.
 
-* ``gunicorn[setproctitle]`` - Enables setting the process name
+* ``gumicorn[setproctitle]`` - Enables setting the process name
 
 Multiple extras can be combined, like
-``pip install gunicorn[gevent,setproctitle]``.
+``pip install gumicorn[gevent,setproctitle]``.
 
 Debian GNU/Linux
 ================
@@ -83,9 +83,9 @@ different versions of Gunicorn with virtualenv. This has a number of
 advantages:
 
 * Zero-effort installation: Automatically starts multiple Gunicorn instances
-  based on configurations defined in ``/etc/gunicorn.d``.
+  based on configurations defined in ``/etc/gumicorn.d``.
 
-* Sensible default locations for logs (``/var/log/gunicorn``). Logs
+* Sensible default locations for logs (``/var/log/gumicorn``). Logs
   can be automatically rotated and compressed using ``logrotate``.
 
 * Improved security: Can easily run each Gunicorn instance with a dedicated
@@ -116,13 +116,13 @@ Then, update your local package lists::
 
 You can then install the latest version using::
 
-    $ sudo apt-get -t buster-backports install gunicorn
+    $ sudo apt-get -t buster-backports install gumicorn
 
 oldstable ("stretch")
 ---------------------
 
-While Debian releases newer than Stretch will give you gunicorn with Python 3
-support no matter if you install the gunicorn or gunicorn3 package for Stretch
+While Debian releases newer than Stretch will give you gumicorn with Python 3
+support no matter if you install the gumicorn or gunicorn3 package for Stretch
 you specifically have to install gunicorn3 to get Python 3 support.
 
 The version of Gunicorn in the Debian_ "oldstable" distribution is 19.6.0
@@ -150,7 +150,7 @@ Testing ("bullseye") / Unstable ("sid")
 "bullseye" and "sid" contain the latest released version of Gunicorn 20.0.4
 (December 2020). You can install it in the usual way::
 
-    $ sudo apt-get install gunicorn
+    $ sudo apt-get install gumicorn
 
 
 Ubuntu
@@ -160,7 +160,7 @@ Ubuntu_ 20.04 LTS (Focal Fossa) or later contains the Gunicorn package by
 default 20.0.4 (December 2020) so that you can install it in the usual way::
 
     $ sudo apt-get update
-    $ sudo apt-get install gunicorn
+    $ sudo apt-get install gumicorn
 
 
 .. _`design docs`: design.html

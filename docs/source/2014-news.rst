@@ -31,7 +31,7 @@ Logging
 AioHttp worker
 ++++++++++++++
 
-- fix :issue:`830` make sure gaiohttp worker is shipped with gunicorn.
+- fix :issue:`830` make sure gaiohttp worker is shipped with gumicorn.
 
 19.1 / 2014-07-26
 =================
@@ -56,7 +56,7 @@ Tornado worker
 - fix :issue:`771`: support tornado 4.0
 - fix :issue:`783`: x_headers error. The x-forwarded-headers option has been removed
   in `c4873681299212d6082cd9902740eef18c2f14f1
-  <https://github.com/benoitc/gunicorn/commit/c4873681299212d6082cd9902740eef18c2f14f1>`_.
+  <https://github.com/ecxod/gumicorn/commit/c4873681299212d6082cd9902740eef18c2f14f1>`_.
   The discussion is available on :pr:`633`.
 
 
@@ -89,14 +89,14 @@ Paster
 Extra
 +++++
 
-- fix RuntimeError in gunicorn.reloader (:issue:`807`)
+- fix RuntimeError in gumicorn.reloader (:issue:`807`)
 
 
 Documentation
 +++++++++++++
 
 - update faq: put a note on how `watch logs in the console
-  <http://docs.gunicorn.org/en/latest/faq.html#why-i-don-t-see-any-logs-in-the-console>`_
+  <http://docs.gumicorn.org/en/latest/faq.html#why-i-don-t-see-any-logs-in-the-console>`_
   since many people asked for it.
 
 
@@ -105,7 +105,7 @@ Documentation
 
 Gunicorn 19.0 is a major release with new features and fixes. This
 version improve a lot the usage of Gunicorn with python 3 by adding `two
-new workers <http://docs.gunicorn.org/en/latest/design.html#asyncio-workers>`_
+new workers <http://docs.gumicorn.org/en/latest/design.html#asyncio-workers>`_
 to it: `gthread` a fully threaded async worker using futures and `gaiohttp` a
 worker using asyncio.
 
@@ -116,7 +116,7 @@ Breaking Changes
 Switch QUIT and TERM signals
 ++++++++++++++++++++++++++++
 
-With this change, when gunicorn receives a QUIT all the workers are
+With this change, when gumicorn receives a QUIT all the workers are
 killed immediately and exit and TERM is used for the graceful shutdown.
 
 Note: the old behaviour was based on the NGINX but the new one is more
@@ -133,7 +133,7 @@ Deprecations
 
 `run_gunicorn`, `gunicorn_django` and `gunicorn_paster` are now
 completely deprecated and will be removed in the next release. Use the
-`gunicorn` command instead.
+`gumicorn` command instead.
 
 
 Changes
@@ -149,7 +149,7 @@ core
   `worker_abort` hook on SIGABRT signal.
 - fix: save listener socket name in workers so we can handle buffered
   keep-alive requests after the listener has closed.
-- add on_exit hook called just before exiting gunicorn.
+- add on_exit hook called just before exiting gumicorn.
 - add support for python 3.4
 - fix: do not swallow unexpected errors when reaping
 - fix: remove incompatible SSL option with python 2.6
@@ -159,7 +159,7 @@ core
 - switch QUIT and TERM signal
 - reap workers in SIGCHLD handler
 - add universal wheel support
-- use `email.utils.formatdate` in gunicorn.util.http_date
+- use `email.utils.formatdate` in gumicorn.util.http_date
 - deprecate the `--debug` option
 - fix: log exceptions that occur after response start …
 - allows loading of applications from `.pyc` files (#693)
@@ -172,15 +172,15 @@ core
 - add: include tz offset in access log
 - add: include access logs in the syslog handler.
 - add --reload option for code reloading
-- add the capability to load `gunicorn.base.Application` without the loading of
-  the arguments of the command line. It allows you to :ref:`embed gunicorn in
+- add the capability to load `gumicorn.base.Application` without the loading of
+  the arguments of the command line. It allows you to :ref:`embed gumicorn in
   your own application <custom>`.
 - improve: set wsgi.multithread to True for async workers
 - fix logging: make sure to redirect wsgi.errors when needed
 - add: syslog logging can now be done to a unix socket
 - fix logging: don't try to redirect stdout/stderr to the logfile.
 - fix logging: don't propagate log
-- improve logging: file option can be overridden by the gunicorn options
+- improve logging: file option can be overridden by the gumicorn options
   `--error-logfile` and `--access-logfile` if they are given.
 - fix: don't override SERVER_* by the Host header
 - fix: handle_error

@@ -63,7 +63,7 @@ Logging
 Documentation
 +++++++++++++
 
-- Simplify installation instructions in gunicorn.org (:issue:`1072`)
+- Simplify installation instructions in gumicorn.org (:issue:`1072`)
 - Fix URL and default worker type in example_config (:issue:`1209`)
 - update django doc url to 1.8 lts (:issue:`1213`)
 - fix: miscellaneous wording corrections (:issue:`1216`)
@@ -82,7 +82,7 @@ Tests
 19.4.5 / 2016/01/05
 ===================
 
-- fix: NameError fileno in gunicorn.http.wsgi (:issue:`1178`)
+- fix: NameError fileno in gumicorn.http.wsgi (:issue:`1178`)
 
 19.4.4 / 2016/01/04
 ===================
