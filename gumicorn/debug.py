@@ -3,7 +3,7 @@
 # See the NOTICE for more information.
 
 """The debug module contains utilities and functions for better
-debugging Gunicorn."""
+debugging Gumicorn."""
 
 import sys
 import linecache
