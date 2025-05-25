@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 name = "gumicorn"
 authors = [{name = "Christian Eichert", email = "c@zp1.net"}]
 license = "GPL-3.0-or-later"
-license-files = "LICENSE*"
+license-files = ["LICENSE"]
 description = "WSGI HTTP Server for UNIX"
 readme = "README.md"
 classifiers = [
