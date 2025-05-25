@@ -140,11 +140,11 @@ class Arbiter:
 
         if not self.LISTENERS:
             fds = None
-            listen_fds = systemd.listen_fds()
-            if listen_fds:
-                self.systemd = True
-                fds = range(systemd.SD_LISTEN_FDS_START,
-                            systemd.SD_LISTEN_FDS_START + listen_fds)
+            # listen_fds = systemd.listen_fds()
+            # if listen_fds:
+            #     self.systemd = True
+            #     fds = range(systemd.SD_LISTEN_FDS_START,
+            #                 systemd.SD_LISTEN_FDS_START + listen_fds)
 
             elif self.master_pid:
                 fds = []
