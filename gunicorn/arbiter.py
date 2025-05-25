@@ -57,7 +57,7 @@ class Arbiter:
         self.setup(app)
 
         self.pidfile = None
-        self.systemd = False
+        # self.systemd = False
         self.worker_age = 0
         self.reexec_pid = 0
         self.master_pid = 0
