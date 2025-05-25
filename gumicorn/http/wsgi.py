@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import io
@@ -8,10 +8,10 @@ import os
 import re
 import sys
 
-from gunicorn.http.message import TOKEN_RE
-from gunicorn.http.errors import ConfigurationProblem, InvalidHeader, InvalidHeaderName
-from gunicorn import SERVER_SOFTWARE, SERVER
-from gunicorn import util
+from gumicorn.http.message import TOKEN_RE
+from gumicorn.http.errors import ConfigurationProblem, InvalidHeader, InvalidHeaderName
+from gumicorn import SERVER_SOFTWARE, SERVER
+from gumicorn import util
 
 # Send files in at most 1GB blocks as some operating systems can have problems
 # with sending files in blocks over 2GB.
@@ -45,7 +45,7 @@ class WSGIErrorsWrapper(io.RawIOBase):
         # There is no public __init__ method for RawIOBase so
         # we don't need to call super() in the __init__ method.
         # pylint: disable=super-init-not-called
-        errorlog = logging.getLogger("gunicorn.error")
+        errorlog = logging.getLogger("gumicorn.error")
         handlers = errorlog.handlers
         self.streams = []
 
@@ -83,7 +83,7 @@ def default_environ(req, sock, cfg):
     env = base_environ(cfg)
     env.update({
         "wsgi.input": req.body,
-        "gunicorn.socket": sock,
+        "gumicorn.socket": sock,
         "REQUEST_METHOD": req.method,
         "QUERY_STRING": req.query,
         "RAW_URI": req.uri,
