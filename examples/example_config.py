@@ -1,4 +1,4 @@
-# Sample Gunicorn configuration file.
+# Sample gumicorn configuration file.
 
 #
 # Server socket
@@ -39,7 +39,7 @@ backlog = 2048
 #       of the other worker classes.
 #
 #       A string referring to a Python path to a subclass of
-#       gunicorn.workers.base.Worker. The default provided values
+#       gumicorn.workers.base.Worker. The default provided values
 #       can be seen at
 #       http://docs.gunicorn.org/en/latest/settings.html#worker-class
 #
@@ -84,7 +84,7 @@ spew = False
 #
 # Server mechanics
 #
-#   daemon - Detach the main Gunicorn process from the controlling
+#   daemon - Detach the main Gumicorn process from the controlling
 #       terminal with a standard fork/fork sequence.
 #
 #       True or False
@@ -107,7 +107,7 @@ spew = False
 #       can be retrieved with a call to pwd.getgrnam(value) or None
 #       to change the worker processes group.
 #
-#   umask - A mask for file permissions written by Gunicorn. Note that
+#   umask - A mask for file permissions written by Gumicorn. Note that
 #       this affects unix socket permissions.
 #
 #       A valid value for the os.umask(mode) call or a string
@@ -154,13 +154,13 @@ access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
 # Process naming
 #
 #   proc_name - A base to use with setproctitle to change the way
-#       that Gunicorn processes are reported in the system process
+#       that Gumicorn processes are reported in the system process
 #       table. This affects things like 'ps' and 'top'. If you're
-#       going to be running more than one instance of Gunicorn you'll
+#       going to be running more than one instance of Gumicorn you'll
 #       probably want to set a name to tell them apart. This requires
 #       that you install the setproctitle module.
 #
-#       A string or None to choose a default of something like 'gunicorn'.
+#       A string or None to choose a default of something like 'gumicorn'.
 #
 
 proc_name = None
