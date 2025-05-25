@@ -26,7 +26,7 @@ def app(environ, start_response):
     response_headers = [
         ('Content-type', 'text/plain'),
         ('Transfer-Encoding', "chunked"),
-        ('X-Gunicorn-Version', __version__)
+        ('X-Gumicorn-Version', __version__)
     ]
     start_response(status, response_headers)
 
