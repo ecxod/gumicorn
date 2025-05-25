@@ -2283,7 +2283,7 @@ class PermitObsoleteFolding(Setting):
         Use with care and only if necessary. Temporary; the precise effect of this option may
         change in a future version, or it may be removed altogether.
 
-        .. versionadded:: 23.0.0
+        .. versionadded:: 23.0.0-ecxod
         """
 
 
