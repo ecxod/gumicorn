@@ -1,8 +1,8 @@
 import unittest.mock as mock
 
-from gunicorn.app.base import Application
-from gunicorn.workers.base import Worker
-from gunicorn.reloader import reloader_engines
+from gumicorn.app.base import Application
+from gumicorn.workers.base import Worker
+from gumicorn.reloader import reloader_engines
 
 
 class ReloadApp(Application):

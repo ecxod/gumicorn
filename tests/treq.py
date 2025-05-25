@@ -9,9 +9,9 @@ import os
 import random
 import types
 
-from gunicorn.config import Config
-from gunicorn.http.parser import RequestParser
-from gunicorn.util import split_request_uri
+from gumicorn.config import Config
+from gumicorn.http.parser import RequestParser
+from gumicorn.util import split_request_uri
 
 dirname = os.path.dirname(__file__)
 random.seed()

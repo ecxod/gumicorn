@@ -3,8 +3,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from gunicorn.config import Config
-from gunicorn.glogging import Logger
+from gumicorn.config import Config
+from gumicorn.glogging import Logger
 
 
 def test_atoms_defaults():

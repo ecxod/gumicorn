@@ -1,10 +1,10 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 from unittest import mock
 
-from gunicorn import sock
+from gumicorn import sock
 
 
 @mock.patch('os.stat')

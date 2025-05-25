@@ -1,6 +1,6 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 def test_import():
-    __import__('gunicorn.workers.ggevent')
+    __import__('gumicorn.workers.ggevent')

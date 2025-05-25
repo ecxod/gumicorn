@@ -1,5 +1,5 @@
-from gunicorn.config import Config
-from gunicorn.http.errors import InvalidRequestMethod
+from gumicorn.config import Config
+from gumicorn.http.errors import InvalidRequestMethod
 
 cfg = Config()
 request = InvalidRequestMethod

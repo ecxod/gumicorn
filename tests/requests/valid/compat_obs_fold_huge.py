@@ -1,4 +1,4 @@
-from gunicorn.config import Config
+from gumicorn.config import Config
 
 cfg = Config()
 cfg.set('permit_obsolete_folding', True)

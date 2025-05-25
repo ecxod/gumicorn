@@ -1,5 +1,5 @@
-from gunicorn.http.errors import ObsoleteFolding
-from gunicorn.config import Config
+from gumicorn.http.errors import ObsoleteFolding
+from gumicorn.config import Config
 
 cfg = Config()
 cfg.set('permit_obsolete_folding', True)

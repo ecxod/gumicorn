@@ -1,3 +1,3 @@
-from gunicorn.http.errors import ObsoleteFolding
+from gumicorn.http.errors import ObsoleteFolding
 
 request = ObsoleteFolding

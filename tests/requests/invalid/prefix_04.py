@@ -1,5 +1,5 @@
-from gunicorn.config import Config
-from gunicorn.http.errors import InvalidHeader
+from gumicorn.config import Config
+from gumicorn.http.errors import InvalidHeader
 
 cfg = Config()
 request = InvalidHeader

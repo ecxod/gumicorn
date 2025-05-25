@@ -1,2 +1,2 @@
-from gunicorn.http.errors import InvalidHeader
+from gumicorn.http.errors import InvalidHeader
 request = InvalidHeader

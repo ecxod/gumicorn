@@ -1,16 +1,16 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import os
 from unittest import mock
 
-import gunicorn.app.base
-import gunicorn.arbiter
-from gunicorn.config import ReusePort
+import gumicorn.app.base
+import gumicorn.arbiter
+from gumicorn.config import ReusePort
 
 
-class DummyApplication(gunicorn.app.base.BaseApplication):
+class DummyApplication(gumicorn.app.base.BaseApplication):
     """
     Dummy application that has a default configuration.
     """
@@ -25,9 +25,9 @@ class DummyApplication(gunicorn.app.base.BaseApplication):
         """No-op"""
 
 
-@mock.patch('gunicorn.sock.close_sockets')
+@mock.patch('gumicorn.sock.close_sockets')
 def test_arbiter_stop_closes_listeners(close_sockets):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     listener1 = mock.Mock()
     listener2 = mock.Mock()
     listeners = [listener1, listener2]
@@ -36,33 +36,33 @@ def test_arbiter_stop_closes_listeners(close_sockets):
     close_sockets.assert_called_with(listeners, True)
 
 
-@mock.patch('gunicorn.sock.close_sockets')
+@mock.patch('gumicorn.sock.close_sockets')
 def test_arbiter_stop_child_does_not_unlink_listeners(close_sockets):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.reexec_pid = os.getpid()
     arbiter.stop()
     close_sockets.assert_called_with([], False)
 
 
-@mock.patch('gunicorn.sock.close_sockets')
+@mock.patch('gumicorn.sock.close_sockets')
 def test_arbiter_stop_parent_does_not_unlink_listeners(close_sockets):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.master_pid = os.getppid()
     arbiter.stop()
     close_sockets.assert_called_with([], False)
 
 
-@mock.patch('gunicorn.sock.close_sockets')
+@mock.patch('gumicorn.sock.close_sockets')
 def test_arbiter_stop_does_not_unlink_systemd_listeners(close_sockets):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.systemd = True
     arbiter.stop()
     close_sockets.assert_called_with([], False)
 
 
-@mock.patch('gunicorn.sock.close_sockets')
+@mock.patch('gumicorn.sock.close_sockets')
 def test_arbiter_stop_does_not_unlink_when_using_reuse_port(close_sockets):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.cfg.settings['reuse_port'] = ReusePort()
     arbiter.cfg.settings['reuse_port'].set(True)
     arbiter.stop()
@@ -73,7 +73,7 @@ def test_arbiter_stop_does_not_unlink_when_using_reuse_port(close_sockets):
 @mock.patch('os.fork')
 @mock.patch('os.execvpe')
 def test_arbiter_reexec_passing_systemd_sockets(execvpe, fork, getpid):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.LISTENERS = [mock.Mock(), mock.Mock()]
     arbiter.systemd = True
     fork.return_value = 0
@@ -89,7 +89,7 @@ def test_arbiter_reexec_passing_systemd_sockets(execvpe, fork, getpid):
 @mock.patch('os.fork')
 @mock.patch('os.execvpe')
 def test_arbiter_reexec_passing_gunicorn_sockets(execvpe, fork, getpid):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     listener1 = mock.Mock()
     listener2 = mock.Mock()
     listener1.fileno.return_value = 4
@@ -105,7 +105,7 @@ def test_arbiter_reexec_passing_gunicorn_sockets(execvpe, fork, getpid):
 
 @mock.patch('os.fork')
 def test_arbiter_reexec_limit_parent(fork):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.reexec_pid = ~os.getpid()
     arbiter.reexec()
     assert fork.called is False, "should not fork when there is already a child"
@@ -113,7 +113,7 @@ def test_arbiter_reexec_limit_parent(fork):
 
 @mock.patch('os.fork')
 def test_arbiter_reexec_limit_child(fork):
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.master_pid = ~os.getpid()
     arbiter.reexec()
     assert fork.called is False, "should not fork when arbiter is a child"
@@ -123,7 +123,7 @@ def test_arbiter_reexec_limit_child(fork):
 def test_arbiter_calls_worker_exit(mock_os_fork):
     mock_os_fork.return_value = 0
 
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.cfg.settings['worker_exit'] = mock.Mock()
     arbiter.pid = None
     mock_worker = mock.Mock()
@@ -138,7 +138,7 @@ def test_arbiter_calls_worker_exit(mock_os_fork):
 @mock.patch('os.waitpid')
 def test_arbiter_reap_workers(mock_os_waitpid):
     mock_os_waitpid.side_effect = [(42, 0), (0, 0)]
-    arbiter = gunicorn.arbiter.Arbiter(DummyApplication())
+    arbiter = gumicorn.arbiter.Arbiter(DummyApplication())
     arbiter.cfg.settings['child_exit'] = mock.Mock()
     mock_worker = mock.Mock()
     arbiter.WORKERS = {42: mock_worker}
@@ -184,4 +184,4 @@ def test_env_vars_available_during_preload():
     """
     # Note that we aren't making any assertions here, they are made in the
     # dummy application object being loaded here instead.
-    gunicorn.arbiter.Arbiter(PreloadedAppWithEnvSettings())
+    gumicorn.arbiter.Arbiter(PreloadedAppWithEnvSettings())

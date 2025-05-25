@@ -3,12 +3,12 @@ import t
 import pytest
 from unittest import mock
 
-from gunicorn import util
-from gunicorn.http.body import Body, LengthReader, EOFReader
-from gunicorn.http.wsgi import Response
-from gunicorn.http.unreader import Unreader, IterUnreader, SocketUnreader
-from gunicorn.http.errors import InvalidHeader, InvalidHeaderName, InvalidHTTPVersion
-from gunicorn.http.message import TOKEN_RE
+from gumicorn import util
+from gumicorn.http.body import Body, LengthReader, EOFReader
+from gumicorn.http.wsgi import Response
+from gumicorn.http.unreader import Unreader, IterUnreader, SocketUnreader
+from gumicorn.http.errors import InvalidHeader, InvalidHeaderName, InvalidHTTPVersion
+from gumicorn.http.message import TOKEN_RE
 
 
 def test_method_pattern():

@@ -1,2 +1,2 @@
-from gunicorn.http.errors import InvalidChunkSize
+from gumicorn.http.errors import InvalidChunkSize
 request = InvalidChunkSize

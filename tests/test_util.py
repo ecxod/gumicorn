@@ -1,12 +1,12 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 import os
 
 import pytest
 
-from gunicorn import util
-from gunicorn.errors import AppImportError
+from gumicorn import util
+from gumicorn.errors import AppImportError
 from urllib.parse import SplitResult
 
 

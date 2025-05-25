@@ -1,11 +1,11 @@
 # Copyright 2013 Dariusz Suchojad <dsuch at zato.io>
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import pytest
 
-from gunicorn.config import (
+from gumicorn.config import (
     KeyFile, CertFile, CACerts, SuppressRaggedEOFs,
     DoHandshakeOnConnect, Setting, Ciphers,
 )

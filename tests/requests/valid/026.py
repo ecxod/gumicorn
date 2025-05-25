@@ -1,4 +1,4 @@
-from gunicorn.config import Config
+from gumicorn.config import Config
 
 cfg = Config()
 cfg.set('limit_request_line', 0)

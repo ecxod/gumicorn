@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import os
@@ -8,14 +8,14 @@ import sys
 
 import pytest
 
-from gunicorn import config
-from gunicorn.app.base import Application
-from gunicorn.app.wsgiapp import WSGIApplication
-from gunicorn.errors import ConfigError
-from gunicorn.util import load_class
-from gunicorn.workers.sync import SyncWorker
-from gunicorn import glogging
-from gunicorn.instrument import statsd
+from gumicorn import config
+from gumicorn.app.base import Application
+from gumicorn.app.wsgiapp import WSGIApplication
+from gumicorn.errors import ConfigError
+from gumicorn.util import load_class
+from gumicorn.workers.sync import SyncWorker
+from gumicorn import glogging
+from gumicorn.instrument import statsd
 
 dirname = os.path.dirname(__file__)
 def cfg_module():
@@ -109,7 +109,7 @@ def test_property_access():
     assert os.getegid() == c.gid
 
     # Proc name
-    assert "gunicorn" == c.proc_name
+    assert "gumicorn" == c.proc_name
 
     # Not a config property
     pytest.raises(AttributeError, getattr, c, "foo")
@@ -157,7 +157,7 @@ def test_pos_int_validation():
 
 def test_str_validation():
     c = config.Config()
-    assert c.proc_name == "gunicorn"
+    assert c.proc_name == "gumicorn"
     c.set("proc_name", " foo ")
     assert c.proc_name == "foo"
     pytest.raises(TypeError, c.set, "proc_name", 2)
@@ -300,7 +300,7 @@ def test_cli_overrides_config_module():
 @pytest.fixture
 def create_config_file(request):
     default_config = os.path.join(os.path.abspath(os.getcwd()),
-                                                      'gunicorn.conf.py')
+                                                      'gumicorn.conf.py')
     with open(default_config, 'w+') as default:
         default.write("bind='0.0.0.0:9090'")
 
@@ -367,7 +367,7 @@ def test_statsd_host():
 def test_statsd_host_with_unix_as_hostname():
     # This is a regression test for major release 20. After this release
     # we should consider modifying the behavior of util.parse_address to
-    # simplify gunicorn's code
+    # simplify gumicorn's code
     c = config.Config()
     c.set("statsd_host", "unix:7777")
     assert c.statsd_host == ("unix", 7777)

@@ -1,2 +1,2 @@
-from gunicorn.http.errors import LimitRequestLine
+from gumicorn.http.errors import LimitRequestLine
 request = LimitRequestLine

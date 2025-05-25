@@ -1,6 +1,6 @@
 # Copyright 2009 Paul J. Davis <paul.joseph.davis@gmail.com>
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import io
@@ -9,7 +9,7 @@ import tempfile
 
 dirname = os.path.dirname(__file__)
 
-from gunicorn.http.parser import RequestParser
+from gumicorn.http.parser import RequestParser
 
 
 def data_source(fname):
