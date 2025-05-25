@@ -1,11 +1,11 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import io
 import sys
 
-from gunicorn.http.errors import (NoMoreData, ChunkMissingTerminator,
+from gumicorn.http.errors import (NoMoreData, ChunkMissingTerminator,
                                   InvalidChunkSize)
 
 
