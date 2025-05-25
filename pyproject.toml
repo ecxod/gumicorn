@@ -6,14 +6,14 @@ build-backend = "setuptools.build_meta"
 # see https://packaging.python.org/en/latest/specifications/pyproject-toml/
 name = "gumicorn"
 authors = [{name = "Christian Eichert", email = "c@zp1.net"}]
-license = {text = "MIT"}
+license = "GPL-3.0-or-later"
+license-files = "LICENSE*"
 description = "WSGI HTTP Server for UNIX"
 readme = "README.md"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Other Environment",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: POSIX",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
