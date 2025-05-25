@@ -1,9 +1,9 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
-from gunicorn.http.message import Request
-from gunicorn.http.unreader import SocketUnreader, IterUnreader
+from gumicorn.http.message import Request
+from gumicorn.http.unreader import SocketUnreader, IterUnreader
 
 
 class Parser:
