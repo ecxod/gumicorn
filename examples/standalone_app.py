@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# An example of a standalone application using the internal API of Gunicorn.
+# An example of a standalone application using the internal API of Gumicorn.
 #
 #   $ python standalone_app.py
 #
