@@ -1,8 +1,8 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
-from gunicorn.http.message import Message, Request
-from gunicorn.http.parser import RequestParser
+from gumicorn.http.message import Message, Request
+from gumicorn.http.parser import RequestParser
 
 __all__ = ['Message', 'Request', 'RequestParser']
