@@ -418,12 +418,12 @@ class Arbiter:
         environ = self.cfg.env_orig.copy()
         environ['GUNICORN_PID'] = str(master_pid)
 
-        if self.systemd:
-            environ['LISTEN_PID'] = str(os.getpid())
-            environ['LISTEN_FDS'] = str(len(self.LISTENERS))
-        else:
-            environ['GUNICORN_FD'] = ','.join(
-                str(lnr.fileno()) for lnr in self.LISTENERS)
+        # if self.systemd:
+        #     environ['LISTEN_PID'] = str(os.getpid())
+        #     environ['LISTEN_FDS'] = str(len(self.LISTENERS))
+        # else:
+        environ['GUNICORN_FD'] = ','.join(
+            str(lnr.fileno()) for lnr in self.LISTENERS)
 
         os.chdir(self.START_CTX['cwd'])
 
