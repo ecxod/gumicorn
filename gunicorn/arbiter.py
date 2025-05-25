@@ -12,7 +12,7 @@ import traceback
 
 from gunicorn.errors import HaltServer, AppImportError
 from gunicorn.pidfile import Pidfile
-from gunicorn import sock, systemd, util
+from gunicorn import sock, util
 
 from gunicorn import __version__, SERVER_SOFTWARE
 
