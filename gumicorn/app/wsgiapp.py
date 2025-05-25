@@ -59,7 +59,7 @@ class WSGIApplication(Application):
 
 def run(prog=None):
     """\
-    The ``gunicorn`` command line runner for launching Gunicorn with
+    The ``gunicorn`` command line runner for launching Gumicorn with
     generic WSGI applications.
     """
     from gunicorn.app.wsgiapp import WSGIApplication
