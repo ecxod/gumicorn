@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 import importlib.util
 import importlib.machinery
@@ -7,10 +7,10 @@ import os
 import sys
 import traceback
 
-from gunicorn import util
-from gunicorn.arbiter import Arbiter
-from gunicorn.config import Config, get_default_config_file
-from gunicorn import debug
+from gumicorn import util
+from gumicorn.arbiter import Arbiter
+from gumicorn.config import Config, get_default_config_file
+from gumicorn import debug
 
 
 class BaseApplication:

@@ -1,12 +1,12 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import os
 
-from gunicorn.errors import ConfigError
-from gunicorn.app.base import Application
-from gunicorn import util
+from gumicorn.errors import ConfigError
+from gumicorn.app.base import Application
+from gumicorn import util
 
 
 class WSGIApplication(Application):
@@ -59,10 +59,10 @@ class WSGIApplication(Application):
 
 def run(prog=None):
     """\
-    The ``gunicorn`` command line runner for launching Gumicorn with
+    The ``gumicorn`` command line runner for launching Gumicorn with
     generic WSGI applications.
     """
-    from gunicorn.app.wsgiapp import WSGIApplication
+    from gumicorn.app.wsgiapp import WSGIApplication
     WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]", prog=prog).run()
 
 

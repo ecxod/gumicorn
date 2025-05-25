@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import configparser
@@ -7,8 +7,8 @@ import os
 
 from paste.deploy import loadapp
 
-from gunicorn.app.wsgiapp import WSGIApplication
-from gunicorn.config import get_default_config_file
+from gumicorn.app.wsgiapp import WSGIApplication
+from gumicorn.config import get_default_config_file
 
 
 def get_wsgi_app(config_uri, name=None, defaults=None):
@@ -36,7 +36,7 @@ def serve(app, global_conf, **local_conf):
     Example configuration:
 
         [server:main]
-        use = egg:gunicorn#main
+        use = egg:gumicorn#main
         host = 127.0.0.1
         port = 5000
     """
