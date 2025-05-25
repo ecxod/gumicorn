@@ -1,7 +1,7 @@
 #
 # An example of how to pass information from the command line to
 # a WSGI app. Only applies to the native WSGI workers used by
-# Gunicorn sync (default) workers.
+# Gumicorn sync (default) workers.
 #
 #   $ gunicorn 'alt_spec:load(arg)'
 #
