@@ -10,7 +10,7 @@ import logging
 from socket import error as SocketError
 
 import gevent
-from gunicorn.workers.base_async import ALREADY_HANDLED
+from gumicorn.workers.base_async import ALREADY_HANDLED
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class WebSocketWSGI:
             start_response('400 Bad Request', [('Connection','close')])
             return []
 
-        sock = environ['gunicorn.socket']
+        sock = environ['gumicorn.socket']
 
         version = environ.get('HTTP_SEC_WEBSOCKET_VERSION')
 

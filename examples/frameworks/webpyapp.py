@@ -1,6 +1,6 @@
 # Run with
 #
-# $ gunicorn webpyapp:app
+# $ gumicorn webpyapp:app
 #
 
 import web

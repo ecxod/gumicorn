@@ -1,10 +1,10 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 #
 # Example code from Eventlet sources
 
-from gunicorn import __version__
+from gumicorn import __version__
 
 
 def app(environ, start_response):

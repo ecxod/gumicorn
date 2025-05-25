@@ -1,7 +1,7 @@
 """
 Use this config file in your script like this:
 
-    $ gunicorn project_name.wsgi:application -c read_django_settings.py
+    $ gumicorn project_name.wsgi:application -c read_django_settings.py
 """
 
 settings_dict = {}

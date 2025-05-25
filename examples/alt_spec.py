@@ -3,11 +3,11 @@
 # a WSGI app. Only applies to the native WSGI workers used by
 # Gumicorn sync (default) workers.
 #
-#   $ gunicorn 'alt_spec:load(arg)'
+#   $ gumicorn 'alt_spec:load(arg)'
 #
 # Single quoting is generally necessary for shell escape semantics.
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 def load(arg):

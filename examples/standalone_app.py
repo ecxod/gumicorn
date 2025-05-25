@@ -4,12 +4,12 @@
 #
 #   $ python standalone_app.py
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import multiprocessing
 
-import gunicorn.app.base
+import gumicorn.app.base
 
 
 def number_of_workers():
@@ -29,7 +29,7 @@ def handler_app(environ, start_response):
     return [response_body]
 
 
-class StandaloneApplication(gunicorn.app.base.BaseApplication):
+class StandaloneApplication(gumicorn.app.base.BaseApplication):
 
     def __init__(self, app, options=None):
         self.options = options or {}

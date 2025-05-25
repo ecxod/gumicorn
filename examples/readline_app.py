@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 #
 # Simple example of readline, reading from a stream then echoing the response
@@ -8,7 +8,7 @@
 #
 # Launch a server with the app in a terminal
 #
-#     $ gunicorn -w3 readline_app:app
+#     $ gumicorn -w3 readline_app:app
 #
 # Then in another terminal launch the following command:
 #
@@ -16,7 +16,7 @@
 
 
 
-from gunicorn import __version__
+from gumicorn import __version__
 
 
 def app(environ, start_response):

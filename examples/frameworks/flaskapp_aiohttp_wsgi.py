@@ -1,6 +1,6 @@
 # Example command to run the example:
 #
-#   $ gunicorn flaskapp_aiohttp_wsgi:aioapp -k aiohttp.worker.GunicornWebWorker
+#   $ gumicorn flaskapp_aiohttp_wsgi:aioapp -k aiohttp.worker.GunicornWebWorker
 #
 
 from aiohttp import web

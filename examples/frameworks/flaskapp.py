@@ -1,6 +1,6 @@
 # Run with:
 #
-#   $ gunicorn flaskapp:app
+#   $ gumicorn flaskapp:app
 #
 
 from flask import Flask
