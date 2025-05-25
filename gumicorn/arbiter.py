@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 import errno
 import os
@@ -10,11 +10,11 @@ import sys
 import time
 import traceback
 
-from gunicorn.errors import HaltServer, AppImportError
-from gunicorn.pidfile import Pidfile
-from gunicorn import sock, util
+from gumicorn.errors import HaltServer, AppImportError
+from gumicorn.pidfile import Pidfile
+from gumicorn import sock, util
 
-from gunicorn import __version__, SERVER_SOFTWARE
+from gumicorn import __version__, SERVER_SOFTWARE
 
 
 class Arbiter:
@@ -120,7 +120,7 @@ class Arbiter:
         """\
         Initialize the arbiter. Start listening and set pidfile if needed.
         """
-        self.log.info("Starting gunicorn %s", __version__)
+        self.log.info("Starting gumicorn %s", __version__)
 
         if 'GUNICORN_PID' in os.environ:
             self.master_pid = int(os.environ.get('GUNICORN_PID'))
@@ -437,10 +437,10 @@ class Arbiter:
         for k in self.cfg.env:
             if k in self.cfg.env_orig:
                 # reset the key to the value it had before
-                # we launched gunicorn
+                # we launched gumicorn
                 os.environ[k] = self.cfg.env_orig[k]
             else:
-                # delete the value set by gunicorn
+                # delete the value set by gumicorn
                 try:
                     del os.environ[k]
                 except KeyError:
@@ -579,7 +579,7 @@ class Arbiter:
         if self._last_logged_active_worker_count != active_worker_count:
             self._last_logged_active_worker_count = active_worker_count
             self.log.debug("{0} workers".format(active_worker_count),
-                           extra={"metric": "gunicorn.workers",
+                           extra={"metric": "gumicorn.workers",
                                   "value": active_worker_count,
                                   "mtype": "gauge"})
 

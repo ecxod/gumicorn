@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import errno
@@ -10,7 +10,7 @@ import stat
 import sys
 import time
 
-from gunicorn import util
+from gumicorn import util
 
 
 class BaseSocket:
@@ -175,7 +175,7 @@ def create_sockets(conf, log, fds=None):
 
         return listeners
 
-    # no sockets is bound, first initialization of gunicorn in this env.
+    # no sockets is bound, first initialization of gumicorn in this env.
     for addr in laddr:
         sock_type = _sock_type(addr)
         sock = None

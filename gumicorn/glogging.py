@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import base64
@@ -16,7 +16,7 @@ import sys
 import threading
 import traceback
 
-from gunicorn import util
+from gumicorn import util
 
 
 # syslog facility codes
@@ -49,18 +49,18 @@ CONFIG_DEFAULTS = {
     "disable_existing_loggers": False,
     "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
-        "gunicorn.error": {
+        "gumicorn.error": {
             "level": "INFO",
             "handlers": ["error_console"],
             "propagate": True,
-            "qualname": "gunicorn.error"
+            "qualname": "gumicorn.error"
         },
 
-        "gunicorn.access": {
+        "gumicorn.access": {
             "level": "INFO",
             "handlers": ["console"],
             "propagate": True,
-            "qualname": "gunicorn.access"
+            "qualname": "gumicorn.access"
         }
     },
     "handlers": {
@@ -181,9 +181,9 @@ class Logger:
     atoms_wrapper_class = SafeAtoms
 
     def __init__(self, cfg):
-        self.error_log = logging.getLogger("gunicorn.error")
+        self.error_log = logging.getLogger("gumicorn.error")
         self.error_log.propagate = False
-        self.access_log = logging.getLogger("gunicorn.access")
+        self.access_log = logging.getLogger("gumicorn.access")
         self.access_log.propagate = False
         self.error_handlers = []
         self.access_handlers = []
@@ -197,7 +197,7 @@ class Logger:
         self.error_log.setLevel(self.loglevel)
         self.access_log.setLevel(logging.INFO)
 
-        # set gunicorn.error handler
+        # set gumicorn.error handler
         if self.cfg.capture_output and cfg.errorlog != "-":
             for stream in sys.stdout, sys.stderr:
                 stream.flush()
@@ -209,7 +209,7 @@ class Logger:
         self._set_handler(self.error_log, cfg.errorlog,
                           logging.Formatter(self.error_fmt, self.datefmt))
 
-        # set gunicorn.access handler
+        # set gumicorn.access handler
         if cfg.accesslog is not None:
             self._set_handler(
                 self.access_log, cfg.accesslog,
@@ -407,7 +407,7 @@ class Logger:
                 return h
 
     def _set_handler(self, log, output, fmt, stream=None):
-        # remove previous gunicorn log handler
+        # remove previous gumicorn log handler
         h = self._get_gunicorn_handler(log)
         if h:
             log.handlers.remove(h)
@@ -434,7 +434,7 @@ class Logger:
         # setup format
         prefix = cfg.syslog_prefix or cfg.proc_name.replace(":", ".")
 
-        prefix = "gunicorn.%s.%s" % (prefix, name)
+        prefix = "gumicorn.%s.%s" % (prefix, name)
 
         # set format
         fmt = logging.Formatter(r"%s: %s" % (prefix, fmt))

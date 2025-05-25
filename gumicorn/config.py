@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 # Please remember to run "make -C docs html" after update "desc" attributes.
@@ -17,9 +17,9 @@ import ssl
 import sys
 import textwrap
 
-from gunicorn import __version__, util
-from gunicorn.errors import ConfigError
-from gunicorn.reloader import reloader_engines
+from gumicorn import __version__, util
+from gumicorn.errors import ConfigError
+from gumicorn.reloader import reloader_engines
 
 KNOWN_SETTINGS = []
 PLATFORM = sys.platform
@@ -118,7 +118,7 @@ class Config:
         # are we using a threaded worker?
         is_sync = isinstance(uri, str) and (uri.endswith('SyncWorker') or uri == 'sync')
         if is_sync and self.threads > 1:
-            uri = "gunicorn.workers.gthread.ThreadWorker"
+            uri = "gumicorn.workers.gthread.ThreadWorker"
 
         worker_class = util.load_class(uri)
         if hasattr(worker_class, "setup"):
@@ -157,12 +157,12 @@ class Config:
         # to the statsd logger
         if uri == LoggerClass.default:
             if 'statsd_host' in self.settings and self.settings['statsd_host'].value is not None:
-                uri = "gunicorn.instrument.statsd.Statsd"
+                uri = "gumicorn.instrument.statsd.Statsd"
 
         logger_class = util.load_class(
             uri,
-            default="gunicorn.glogging.Logger",
-            section="gunicorn.loggers")
+            default="gumicorn.glogging.Logger",
+            section="gumicorn.loggers")
 
         if hasattr(logger_class, "install"):
             logger_class.install()
@@ -541,7 +541,7 @@ def validate_reload_engine(val):
 
 def get_default_config_file():
     config_path = os.path.join(os.path.abspath(os.getcwd()),
-                               'gunicorn.conf.py')
+                               'gumicorn.conf.py')
     if os.path.exists(config_path):
         return config_path
     return None
@@ -553,7 +553,7 @@ class ConfigFile(Setting):
     cli = ["-c", "--config"]
     meta = "CONFIG"
     validator = validate_string
-    default = "./gunicorn.conf.py"
+    default = "./gumicorn.conf.py"
     desc = """\
         :ref:`The Gumicorn config file<configuration_file>`.
 
@@ -562,8 +562,8 @@ class ConfigFile(Setting):
         Only has an effect when specified on the command line or as part of an
         application specific configuration.
 
-        By default, a file named ``gunicorn.conf.py`` will be read from the same
-        directory where gunicorn is being run.
+        By default, a file named ``gumicorn.conf.py`` will be read from the same
+        directory where gumicorn is being run.
 
         .. versionchanged:: 19.4
            Loading the config from a Python module requires the ``python:``
@@ -608,7 +608,7 @@ class Bind(Setting):
 
         Multiple addresses can be bound. ex.::
 
-            $ gunicorn -b 127.0.0.1:8000 -b [::1]:8000 test:app
+            $ gumicorn -b 127.0.0.1:8000 -b [::1]:8000 test:app
 
         will bind the `test:app` application on localhost both on ipv6
         and ipv4 interfaces.
@@ -679,18 +679,18 @@ class WorkerClass(Setting):
 
         * ``sync``
         * ``eventlet`` - Requires eventlet >= 0.24.1 (or install it via
-          ``pip install gunicorn[eventlet]``)
+          ``pip install gumicorn[eventlet]``)
         * ``gevent``   - Requires gevent >= 1.4 (or install it via
-          ``pip install gunicorn[gevent]``)
+          ``pip install gumicorn[gevent]``)
         * ``tornado``  - Requires tornado >= 0.2 (or install it via
-          ``pip install gunicorn[tornado]``)
+          ``pip install gumicorn[tornado]``)
         * ``gthread``  - Python 2 requires the futures package to be installed
-          (or install it via ``pip install gunicorn[gthread]``)
+          (or install it via ``pip install gumicorn[gthread]``)
 
         Optionally, you can provide your own worker by giving Gumicorn a
-        Python path to a subclass of ``gunicorn.workers.base.Worker``.
+        Python path to a subclass of ``gumicorn.workers.base.Worker``.
         This alternative syntax will load the gevent class:
-        ``gunicorn.workers.ggevent.GeventWorker``.
+        ``gumicorn.workers.ggevent.GeventWorker``.
         """
 
 
@@ -1102,7 +1102,7 @@ class Env(Setting):
 
         .. code-block:: console
 
-            $ gunicorn -b 127.0.0.1:8000 --env FOO=1 test:app
+            $ gumicorn -b 127.0.0.1:8000 --env FOO=1 test:app
 
         Or in the configuration file:
 
@@ -1441,7 +1441,7 @@ class ErrorLog(Setting):
     desc = """\
         The Error log file to write to.
 
-        Using ``'-'`` for FILE makes gunicorn log to stderr.
+        Using ``'-'`` for FILE makes gumicorn log to stderr.
 
         .. versionchanged:: 19.2
            Log to stderr by default.
@@ -1489,15 +1489,15 @@ class LoggerClass(Setting):
     cli = ["--logger-class"]
     meta = "STRING"
     validator = validate_class
-    default = "gunicorn.glogging.Logger"
+    default = "gumicorn.glogging.Logger"
     desc = """\
         The logger you want to use to log events in Gumicorn.
 
-        The default class (``gunicorn.glogging.Logger``) handles most
+        The default class (``gumicorn.glogging.Logger``) handles most
         normal usages in logging. It provides error and access logging.
 
         You can provide your own logger by giving Gumicorn a Python path to a
-        class that quacks like ``gunicorn.glogging.Logger``.
+        class that quacks like ``gumicorn.glogging.Logger``.
         """
 
 
@@ -1530,7 +1530,7 @@ class LogConfigDict(Setting):
     Format: https://docs.python.org/3/library/logging.config.html#logging.config.dictConfig
 
     For more context you can look at the default configuration dictionary for logging,
-    which can be found at ``gunicorn.glogging.CONFIG_DEFAULTS``.
+    which can be found at ``gumicorn.glogging.CONFIG_DEFAULTS``.
 
     .. versionadded:: 19.8
     """
@@ -1608,7 +1608,7 @@ class SyslogPrefix(Setting):
     desc = """\
     Makes Gumicorn use the parameter as program-name in the syslog entries.
 
-    All entries will be prefixed by ``gunicorn.<prefix>``. By default the
+    All entries will be prefixed by ``gumicorn.<prefix>``. By default the
     program name is the name of the process.
     """
 
@@ -1716,7 +1716,7 @@ class DefaultProcName(Setting):
     name = "default_proc_name"
     section = "Process Naming"
     validator = validate_string
-    default = "gunicorn"
+    default = "gumicorn"
     desc = """\
         Internal setting that is adjusted for each type of application.
         """
@@ -2260,7 +2260,7 @@ class PasteGlobalConf(Setting):
 
         The variables are passed to the PasteDeploy entrypoint. Example::
 
-            $ gunicorn -b 127.0.0.1:8000 --paste development.ini --paste-global FOO=1 --paste-global BAR=2
+            $ gumicorn -b 127.0.0.1:8000 --paste development.ini --paste-global FOO=1 --paste-global BAR=2
 
         .. versionadded:: 19.7
         """
@@ -2365,7 +2365,7 @@ class CasefoldHTTPMethod(Setting):
 
          HTTP methods are case sensitive by definition, and merely uppercase by convention.
 
-         This option is provided because previous versions of gunicorn defaulted to this behaviour.
+         This option is provided because previous versions of gumicorn defaulted to this behaviour.
 
          Use with care and only if necessary. Deprecated; scheduled for removal in 24.0.0
 
@@ -2422,7 +2422,7 @@ class HeaderMap(Setting):
         Configure how header field names are mapped into environ
 
         Headers containing underscores are permitted by RFC9110,
-        but gunicorn joining headers of different names into
+        but gumicorn joining headers of different names into
         the same environment variable will dangerously confuse applications as to which is which.
 
         The safe default ``drop`` is to silently drop headers that cannot be unambiguously mapped.

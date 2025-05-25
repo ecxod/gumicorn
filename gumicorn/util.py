@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 import ast
 import email.utils
@@ -26,8 +26,8 @@ try:
 except (ModuleNotFoundError, ImportError):
     import importlib_metadata
 
-from gunicorn.errors import AppImportError
-from gunicorn.workers import SUPPORTED_WORKERS
+from gumicorn.errors import AppImportError
+from gumicorn.workers import SUPPORTED_WORKERS
 import urllib.parse
 
 REDIRECT_TO = getattr(os, 'devnull', '/dev/null')
@@ -50,7 +50,7 @@ try:
     from setproctitle import setproctitle
 
     def _setproctitle(title):
-        setproctitle("gunicorn: %s" % title)
+        setproctitle("gumicorn: %s" % title)
 except ImportError:
     def _setproctitle(title):
         pass
@@ -65,8 +65,8 @@ def load_entry_point(distribution, group, name):
     return eps[0].load()
 
 
-def load_class(uri, default="gunicorn.workers.sync.SyncWorker",
-               section="gunicorn.workers"):
+def load_class(uri, default="gumicorn.workers.sync.SyncWorker",
+               section="gumicorn.workers"):
     if inspect.isclass(uri):
         return uri
     if uri.startswith("egg:"):
@@ -97,7 +97,7 @@ def load_class(uri, default="gunicorn.workers.sync.SyncWorker",
 
                 try:
                     return load_entry_point(
-                        "gunicorn", section, uri
+                        "gumicorn", section, uri
                     )
                 except Exception:
                     exc = traceback.format_exc()
@@ -529,7 +529,7 @@ def daemonize(enable_stdio_inheritance=False):
             # off and all we can really do is leave them as
             # they were.
             #
-            # This will allow 'gunicorn ... > output.log 2>&1'
+            # This will allow 'gumicorn ... > output.log 2>&1'
             # to work with stdout/stderr going to the file
             # as expected.
             #
