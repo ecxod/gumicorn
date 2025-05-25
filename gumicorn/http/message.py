@@ -1,21 +1,21 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 import io
 import re
 import socket
 
-from gunicorn.http.body import ChunkedReader, LengthReader, EOFReader, Body
-from gunicorn.http.errors import (
+from gumicorn.http.body import ChunkedReader, LengthReader, EOFReader, Body
+from gumicorn.http.errors import (
     InvalidHeader, InvalidHeaderName, NoMoreData,
     InvalidRequestLine, InvalidRequestMethod, InvalidHTTPVersion,
     LimitRequestLine, LimitRequestHeaders,
     UnsupportedTransferCoding, ObsoleteFolding,
 )
-from gunicorn.http.errors import InvalidProxyLine, ForbiddenProxyRequest
-from gunicorn.http.errors import InvalidSchemeHeaders
-from gunicorn.util import bytes_to_str, split_request_uri
+from gumicorn.http.errors import InvalidProxyLine, ForbiddenProxyRequest
+from gumicorn.http.errors import InvalidSchemeHeaders
+from gumicorn.util import bytes_to_str, split_request_uri
 
 MAX_REQUEST_LINE = 8190
 MAX_HEADERS = 32768
@@ -411,7 +411,7 @@ class Request(Message):
         self.method = bits[0]
 
         # nonstandard restriction, suitable for all IANA registered methods
-        # partially enforced in previous gunicorn versions
+        # partially enforced in previous gumicorn versions
         if not self.cfg.permit_unconventional_http_method:
             if METHOD_BADCHAR_RE.search(self.method):
                 raise InvalidRequestMethod(self.method)
