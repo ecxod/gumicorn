@@ -4,17 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 # see https://packaging.python.org/en/latest/specifications/pyproject-toml/
-name = "gunicorn"
-authors = [{name = "Benoit Chesneau", email = "benoitc@gunicorn.org"}]
+name = "gumicorn"
+authors = [{name = "Christian Eichert", email = "c@zp1.net"}]
 license = {text = "MIT"}
 description = "WSGI HTTP Server for UNIX"
-readme = "README.rst"
+readme = "README.md"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Other Environment",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: MacOS :: MacOS X",
     "Operating System :: POSIX",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
@@ -43,11 +42,11 @@ dependencies = [
 dynamic = ["version"]
 
 [project.urls]
-Homepage = "https://gunicorn.org"
-Documentation = "https://docs.gunicorn.org"
-"Issue tracker" = "https://github.com/benoitc/gunicorn/issues"
-"Source code" = "https://github.com/benoitc/gunicorn"
-Changelog = "https://docs.gunicorn.org/en/stable/news.html"
+# Homepage = "https://gunicorn.org"
+# Documentation = "https://docs.gunicorn.org"
+"Issue tracker" = "https://github.com/ecxod/gumicorn/issues"
+"Source code" = "https://github.com/ecxod/gumicorn"
+# Changelog = "https://docs.gunicorn.org/en/stable/news.html"
 
 [project.optional-dependencies]
 gevent = ["gevent>=1.4.0"]
@@ -64,18 +63,18 @@ testing = [
 ]
 
 [project.scripts]
-# duplicates "python -m gunicorn" handling in __main__.py
-gunicorn = "gunicorn.app.wsgiapp:run"
+# duplicates "python -m gumicorn" handling in __main__.py
+gumicorn = "gumicorn.app.wsgiapp:run"
 
 # note the quotes around "paste.server_runner" to escape the dot
 [project.entry-points."paste.server_runner"]
-main = "gunicorn.app.pasterapp:serve"
+main = "gumicorn.app.pasterapp:serve"
 
 [tool.pytest.ini_options]
 # # can override these: python -m pytest --override-ini="addopts="
 norecursedirs = ["examples", "lib", "local", "src"]
 testpaths = ["tests/"]
-addopts = "--assert=plain --cov=gunicorn --cov-report=xml"
+addopts = "--assert=plain --cov=gumicorn --cov-report=xml"
 
 [tool.setuptools]
 zip-safe = false
@@ -86,4 +85,4 @@ license-files = ["LICENSE"]
 find = {namespaces = false}
 
 [tool.setuptools.dynamic]
-version = {attr = "gunicorn.__version__"}
+version = {attr = "gumicorn.__version__"}
