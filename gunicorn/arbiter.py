@@ -378,7 +378,7 @@ class Arbiter:
         """
         unlink = (
             self.reexec_pid == self.master_pid == 0
-            and not self.systemd
+            # and not self.systemd
             and not self.cfg.reuse_port
         )
         sock.close_sockets(self.LISTENERS, unlink)
