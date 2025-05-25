@@ -555,7 +555,7 @@ class ConfigFile(Setting):
     validator = validate_string
     default = "./gunicorn.conf.py"
     desc = """\
-        :ref:`The Gunicorn config file<configuration_file>`.
+        :ref:`The Gumicorn config file<configuration_file>`.
 
         A string of the form ``PATH``, ``file:PATH``, or ``python:MODULE_NAME``.
 
@@ -687,7 +687,7 @@ class WorkerClass(Setting):
         * ``gthread``  - Python 2 requires the futures package to be installed
           (or install it via ``pip install gunicorn[gthread]``)
 
-        Optionally, you can provide your own worker by giving Gunicorn a
+        Optionally, you can provide your own worker by giving Gumicorn a
         Python path to a subclass of ``gunicorn.workers.base.Worker``.
         This alternative syntax will load the gevent class:
         ``gunicorn.workers.ggevent.GeventWorker``.
@@ -828,7 +828,7 @@ class Keepalive(Setting):
 
         Generally set in the 1-5 seconds range for servers with direct connection
         to the client (e.g. when you don't have separate load balancer). When
-        Gunicorn is deployed behind a load balancer, it often makes sense to
+        Gumicorn is deployed behind a load balancer, it often makes sense to
         set this to a higher value.
 
         .. note::
@@ -1077,7 +1077,7 @@ class Daemon(Setting):
     action = "store_true"
     default = False
     desc = """\
-        Daemonize the Gunicorn process.
+        Daemonize the Gumicorn process.
 
         Detaches the server from the controlling terminal and enters the
         background.
@@ -1191,7 +1191,7 @@ class Umask(Setting):
     type = auto_int
     default = 0
     desc = """\
-        A bit mask for the file mode on files written by Gunicorn.
+        A bit mask for the file mode on files written by Gumicorn.
 
         Note that this affects unix socket permissions.
 
@@ -1230,8 +1230,8 @@ class TmpUploadDir(Setting):
 
         This may disappear in the near future.
 
-        This path should be writable by the process permissions set for Gunicorn
-        workers. If not specified, Gunicorn will choose a system generated
+        This path should be writable by the process permissions set for Gumicorn
+        workers. If not specified, Gumicorn will choose a system generated
         temporary directory.
         """
 
@@ -1250,7 +1250,7 @@ class SecureSchemeHeader(Setting):
         A dictionary containing headers and values that the front-end proxy
         uses to indicate HTTPS requests. If the source IP is permitted by
         :ref:`forwarded-allow-ips` (below), *and* at least one request header matches
-        a key-value pair listed in this dictionary, then Gunicorn will set
+        a key-value pair listed in this dictionary, then Gumicorn will set
         ``wsgi.url_scheme`` to ``https``, so your application can tell that the
         request is secure.
 
@@ -1282,7 +1282,7 @@ class ForwardedAllowIPS(Setting):
         Set to ``*`` to disable checking of front-end IPs. This is useful for setups
         where you don't know in advance the IP address of front-end, but
         instead have ensured via other means that only your
-        authorized front-ends can access Gunicorn.
+        authorized front-ends can access Gumicorn.
 
         By default, the value of the ``FORWARDED_ALLOW_IPS`` environment
         variable. If it is not defined, the default is ``"127.0.0.1,::1"``.
@@ -1491,12 +1491,12 @@ class LoggerClass(Setting):
     validator = validate_class
     default = "gunicorn.glogging.Logger"
     desc = """\
-        The logger you want to use to log events in Gunicorn.
+        The logger you want to use to log events in Gumicorn.
 
         The default class (``gunicorn.glogging.Logger``) handles most
         normal usages in logging. It provides error and access logging.
 
-        You can provide your own logger by giving Gunicorn a Python path to a
+        You can provide your own logger by giving Gumicorn a Python path to a
         class that quacks like ``gunicorn.glogging.Logger``.
         """
 
@@ -1510,7 +1510,7 @@ class LogConfig(Setting):
     default = None
     desc = """\
     The log config file to use.
-    Gunicorn uses the standard Python logging module's Configuration
+    Gumicorn uses the standard Python logging module's Configuration
     file format.
     """
 
@@ -1590,7 +1590,7 @@ class Syslog(Setting):
     action = 'store_true'
     default = False
     desc = """\
-    Send *Gunicorn* logs to syslog.
+    Send *Gumicorn* logs to syslog.
 
     .. versionchanged:: 19.8
        You can now disable sending access logs by using the
@@ -1606,7 +1606,7 @@ class SyslogPrefix(Setting):
     validator = validate_string
     default = None
     desc = """\
-    Makes Gunicorn use the parameter as program-name in the syslog entries.
+    Makes Gumicorn use the parameter as program-name in the syslog entries.
 
     All entries will be prefixed by ``gunicorn.<prefix>``. By default the
     program name is the name of the process.
@@ -1704,7 +1704,7 @@ class Procname(Setting):
         A base to use with setproctitle for process naming.
 
         This affects things like ``ps`` and ``top``. If you're going to be
-        running more than one instance of Gunicorn you'll probably want to set a
+        running more than one instance of Gumicorn you'll probably want to set a
         name to tell them apart. This requires that you install the setproctitle
         module.
 
@@ -2008,7 +2008,7 @@ class OnExit(Setting):
 
     default = staticmethod(on_exit)
     desc = """\
-        Called just before exiting Gunicorn.
+        Called just before exiting Gumicorn.
 
         The callable needs to accept a single instance variable for the Arbiter.
         """
@@ -2060,7 +2060,7 @@ class ProxyProtocol(Setting):
         Enable detect PROXY protocol (PROXY mode).
 
         Allow using HTTP and Proxy together. It may be useful for work with
-        stunnel as HTTPS frontend and Gunicorn as HTTP server.
+        stunnel as HTTPS frontend and Gumicorn as HTTP server.
 
         PROXY protocol: http://haproxy.1wt.eu/download/1.5/doc/proxy-protocol.txt
 
@@ -2087,7 +2087,7 @@ class ProxyAllowFrom(Setting):
         Set to ``*`` to disable checking of front-end IPs. This is useful for setups
         where you don't know in advance the IP address of front-end, but
         instead have ensured via other means that only your
-        authorized front-ends can access Gunicorn.
+        authorized front-ends can access Gumicorn.
 
         .. note::
 
@@ -2320,7 +2320,7 @@ class PermitUnconventionalHTTPMethod(Setting):
         methods with lowercase characters or methods containing the # character.
         HTTP methods are case sensitive by definition, and merely uppercase by convention.
 
-        If unset, Gunicorn will apply nonstandard restrictions and cause 400 response status
+        If unset, Gumicorn will apply nonstandard restrictions and cause 400 response status
         in cases where otherwise 501 status is expected. While this option does modify that
         behaviour, it should not be depended upon to guarantee standards-compliant behaviour.
         Rather, it is provided temporarily, to assist in diagnosing backwards-incompatible
@@ -2436,7 +2436,7 @@ class HeaderMap(Setting):
 
         Use with care and only if necessary and after considering if your problem could
         instead be solved by specifically renaming or rewriting only the intended headers
-        on a proxy in front of Gunicorn.
+        on a proxy in front of Gumicorn.
 
         .. versionadded:: 22.0.0
         """
