@@ -1,5 +1,5 @@
 #
-# This file is part of gunicorn released under the MIT license.
+# This file is part of gumicorn released under the MIT license.
 # See the NOTICE for more information.
 
 "Bare-bones implementation of statsD's protocol, client-side"
@@ -8,7 +8,7 @@ import logging
 import socket
 from re import sub
 
-from gunicorn.glogging import Logger
+from gumicorn.glogging import Logger
 
 # Instrumentation constants
 METRIC_VAR = "metric"
@@ -42,19 +42,19 @@ class Statsd(Logger):
     # Log errors and warnings
     def critical(self, msg, *args, **kwargs):
         Logger.critical(self, msg, *args, **kwargs)
-        self.increment("gunicorn.log.critical", 1)
+        self.increment("gumicorn.log.critical", 1)
 
     def error(self, msg, *args, **kwargs):
         Logger.error(self, msg, *args, **kwargs)
-        self.increment("gunicorn.log.error", 1)
+        self.increment("gumicorn.log.error", 1)
 
     def warning(self, msg, *args, **kwargs):
         Logger.warning(self, msg, *args, **kwargs)
-        self.increment("gunicorn.log.warning", 1)
+        self.increment("gumicorn.log.warning", 1)
 
     def exception(self, msg, *args, **kwargs):
         Logger.exception(self, msg, *args, **kwargs)
-        self.increment("gunicorn.log.exception", 1)
+        self.increment("gumicorn.log.exception", 1)
 
     # Special treatment for info, the most common log level
     def info(self, msg, *args, **kwargs):
@@ -101,9 +101,9 @@ class Statsd(Logger):
             status = status.decode('utf-8')
         if isinstance(status, str):
             status = int(status.split(None, 1)[0])
-        self.histogram("gunicorn.request.duration", duration_in_ms)
-        self.increment("gunicorn.requests", 1)
-        self.increment("gunicorn.request.status.%d" % status, 1)
+        self.histogram("gumicorn.request.duration", duration_in_ms)
+        self.increment("gumicorn.requests", 1)
+        self.increment("gumicorn.request.status.%d" % status, 1)
 
     # statsD methods
     # you can use those directly if you want
