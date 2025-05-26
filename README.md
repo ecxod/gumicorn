@@ -5,7 +5,11 @@
 
 WSGI HTTP Server for UNIX
 
-This project is a gunicorn fork for devuan or other 
+This project is a gunicorn fork for systemd free distributions like devuan 
+
+```sh
+pip install gumicorn
+```
 
 if you want make the packege yourself
 
