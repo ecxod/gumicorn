@@ -1,9 +1,3 @@
-#
-# This file is part of gumicorn released under the MIT license.
-# See the NOTICE for more information.
-
-# Please remember to run "make -C docs html" after update "desc" attributes.
-
 import argparse
 import copy
 import grp
