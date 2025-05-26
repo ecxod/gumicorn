@@ -62,7 +62,8 @@ if sys.platform.startswith('linux'):
     except ImportError:
         pass
 
-
+# TODO - reportRedeclaration
+# Class declaration "InotifyReloader" is obscured by a declaration of the same name
 if has_inotify:
 
     class InotifyReloader(threading.Thread):
@@ -78,8 +79,9 @@ if has_inotify:
             self._dirs = set()
             self._watcher = Inotify()
 
-            for extra_file in extra_files:
-                self.add_extra_file(extra_file)
+            if extra_files is not None:
+                for extra_file in extra_files:
+                    self.add_extra_file(extra_file)
 
         def add_extra_file(self, filename):
             dirname = os.path.dirname(filename)
@@ -112,7 +114,8 @@ if has_inotify:
 
                 filename = event[3]
 
-                self._callback(filename)
+                if self._callback is not None:
+                    self._callback(filename)
 
 else:
 
