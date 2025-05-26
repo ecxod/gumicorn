@@ -473,7 +473,7 @@ def daemonize(enable_stdio_inheritance=False):
     Standard daemonization of a process.
     http://www.faqs.org/faqs/unix-faq/programmer/faq/ section 1.7
     """
-    if 'GUNICORN_FD' not in os.environ:
+    if 'GUMICORN_FD' not in os.environ:
         if os.fork():
             os._exit(0)
         os.setsid()
