@@ -31,7 +31,8 @@ class BaseSocket:
         self.sock = self.set_options(sock, bound=bound)
 
     def __str__(self):
-        return "<socket %d>" % self.sock.fileno()
+        if self.sock:
+            return "<socket %d>" % self.sock.fileno()
 
     def __getattr__(self, name):
         return getattr(self.sock, name)
@@ -81,8 +82,9 @@ class TCPSocket(BaseSocket):
         else:
             scheme = "http"
 
-        addr = self.sock.getsockname()
-        return "%s://%s:%d" % (scheme, addr[0], addr[1])
+        if self.sock is not None:
+            addr = self.sock.getsockname()
+            return "%s://%s:%d" % (scheme, addr[0], addr[1])
 
     def set_options(self, sock, bound=False):
         sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
@@ -94,8 +96,9 @@ class TCP6Socket(TCPSocket):
     FAMILY = socket.AF_INET6
 
     def __str__(self):
-        (host, port, _, _) = self.sock.getsockname()
-        return "http://[%s]:%d" % (host, port)
+        if self.sock:
+            (host, port, _, _) = self.sock.getsockname()
+            return "http://[%s]:%d" % (host, port)
 
 
 class UnixSocket(BaseSocket):
