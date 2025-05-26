@@ -157,7 +157,8 @@ class Worker:
             # delete the traceback after use.
             try:
                 _, exc_val, exc_tb = sys.exc_info()
-                self.reloader.add_extra_file(exc_val.filename)
+                if exc_val and self.reloader and hasattr(exc_val,"filename"):
+                    self.reloader.add_extra_file(exc_val.filename)
 
                 tb_string = io.StringIO()
                 traceback.print_tb(exc_tb, file=tb_string)
