@@ -165,11 +165,11 @@ class EventletWorker(AsyncWorker):
                                       self.worker_connections)
 
             acceptors.append(acceptor)
-            eventlet.sleep(0.0)
+            eventlet.sleep(0)
 
         while self.alive:
             self.notify()
-            eventlet.sleep(1.0)
+            eventlet.sleep(1)
 
         self.notify()
         t = None
