@@ -1,9 +1,7 @@
-#
-# This file is part of gumicorn released under the MIT license.
-# See the NOTICE for more information.
-
 import os
 import sys
+from typing import Callable, Union, Any
+from collections.abc import Iterable
 
 try:
     import tornado
@@ -17,6 +15,8 @@ from gumicorn.workers.base import Worker
 from gumicorn import __version__ as gversion
 from gumicorn.sock import ssl_context
 
+# Define WSGI callable type
+WSGIApp = Callable[[dict[str, Any], Callable[..., Any]], Iterable[bytes]]
 
 # Tornado 5.0 updated its IOLoop, and the `io_loop` arguments to many
 # Tornado functions have been removed in Tornado 5.0. Also, they no
@@ -28,6 +28,8 @@ TORNADO5 = tornado.version_info >= (5, 0, 0)
 
 
 class TornadoWorker(Worker):
+    # Explicitly annotate wsgi as a WSGI callable or Tornado Application
+    wsgi: Union[WSGIApp, tornado.web.Application]
 
     @classmethod
     def setup(cls):
@@ -37,7 +39,7 @@ class TornadoWorker(Worker):
         def clear(self):
             old_clear(self)
             if "Gumicorn" not in self._headers["Server"]:
-                self._headers["Server"] += " (Gumicorn/%s)" % gversion
+                self._headers["Server"] += f" (Gumicorn/{gversion})"
         web.RequestHandler.clear = clear
         sys.modules["tornado.web"] = web
 
@@ -100,15 +102,15 @@ class TornadoWorker(Worker):
             PeriodicCallback(self.watchdog, 1000, io_loop=self.ioloop).start()
             PeriodicCallback(self.heartbeat, 1000, io_loop=self.ioloop).start()
 
-        # Assume the app is a WSGI callable if its not an
-        # instance of tornado.web.Application or is an
-        # instance of tornado.wsgi.WSGIApplication
-        app = self.wsgi
+        # Ensure app is either tornado.web.Application or WSGIApplication
+        app: Union[tornado.web.Application, tornado.wsgi.WSGIApplication] = self.wsgi
+        if not isinstance(app, tornado.web.Application):
+            app = WSGIContainer(self.wsgi)
 
         if tornado.version_info[0] < 6:
             if not isinstance(app, tornado.web.Application) or \
                     isinstance(app, tornado.wsgi.WSGIApplication):
-                app = WSGIContainer(app)
+                app = WSGIContainer(self.app)
         elif not isinstance(app, WSGIContainer) and \
                 not isinstance(app, tornado.web.Application):
             app = WSGIContainer(app)
