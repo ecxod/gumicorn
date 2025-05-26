@@ -101,7 +101,7 @@ class ThreadWorker(base.Worker):
         self.alive = False
         # worker_int callback
         self.cfg.worker_int(self)
-        self.tpool.shutdown(False)
+        if self.tpool: self.tpool.shutdown(False)
         time.sleep(0.1)
         sys.exit(0)
 
@@ -113,8 +113,9 @@ class ThreadWorker(base.Worker):
     def enqueue_req(self, conn):
         conn.init()
         # submit the connection to a worker
-        fs = self.tpool.submit(self.handle, conn)
-        self._wrap_future(fs, conn)
+        if self.tpool:
+            fs = self.tpool.submit(self.handle, conn)
+            self._wrap_future(fs, conn)
 
     def accept(self, server, listener):
         try:
@@ -124,33 +125,35 @@ class ThreadWorker(base.Worker):
 
             self.nr_conns += 1
             # wait until socket is readable
-            with self._lock:
-                self.poller.register(conn.sock, selectors.EVENT_READ,
-                                     partial(self.on_client_socket_readable, conn))
+            if self.poller and self._lock is not None:
+                with self._lock:
+                    self.poller.register(conn.sock, selectors.EVENT_READ,
+                                        partial(self.on_client_socket_readable, conn))
         except OSError as e:
             if e.errno not in (errno.EAGAIN, errno.ECONNABORTED,
                                errno.EWOULDBLOCK):
                 raise
 
     def on_client_socket_readable(self, conn, client):
-        with self._lock:
-            # unregister the client from the poller
-            self.poller.unregister(client)
+        if self.poller and self._lock is not None:
+            with self._lock:
+                # unregister the client from the poller
+                self.poller.unregister(client)
 
-            if conn.initialized:
-                # remove the connection from keepalive
-                try:
-                    self._keep.remove(conn)
-                except ValueError:
-                    # race condition
-                    return
+                if conn.initialized:
+                    # remove the connection from keepalive
+                    try:
+                        self._keep.remove(conn)
+                    except ValueError:
+                        # race condition
+                        return
 
         # submit the connection to a worker
         self.enqueue_req(conn)
 
     def murder_keepalived(self):
         now = time.time()
-        while True:
+        while True and self._lock is not None:
             with self._lock:
                 try:
                     # remove the connection from the queue
@@ -167,18 +170,19 @@ class ThreadWorker(base.Worker):
             else:
                 self.nr_conns -= 1
                 # remove the socket from the poller
-                with self._lock:
-                    try:
-                        self.poller.unregister(conn.sock)
-                    except OSError as e:
-                        if e.errno != errno.EBADF:
-                            raise
-                    except KeyError:
-                        # already removed by the system, continue
-                        pass
-                    except ValueError:
-                        # already removed by the system continue
-                        pass
+                if self.poller:
+                    with self._lock:
+                        try:
+                            self.poller.unregister(conn.sock)
+                        except OSError as e:
+                            if e.errno != errno.EBADF:
+                                raise
+                        except KeyError:
+                            # already removed by the system, continue
+                            pass
+                        except ValueError:
+                            # already removed by the system continue
+                            pass
 
                 # close the socket
                 conn.close()
@@ -198,14 +202,15 @@ class ThreadWorker(base.Worker):
             # name unavailable in the request handler so capture it once here
             server = sock.getsockname()
             acceptor = partial(self.accept, server)
-            self.poller.register(sock, selectors.EVENT_READ, acceptor)
+            if self.poller:
+                self.poller.register(sock, selectors.EVENT_READ, acceptor)
 
         while self.alive:
             # notify the arbiter we are alive
             self.notify()
 
             # can we accept more connections?
-            if self.nr_conns < self.worker_connections:
+            if self.poller and self.nr_conns < self.worker_connections:
                 # wait for an event
                 events = self.poller.select(1.0)
                 for key, _ in events:
@@ -230,8 +235,8 @@ class ThreadWorker(base.Worker):
             # handle keepalive timeouts
             self.murder_keepalived()
 
-        self.tpool.shutdown(False)
-        self.poller.close()
+        if self.tpool: self.tpool.shutdown(False)
+        if self.poller: self.poller.close()
 
         for s in self.sockets:
             s.close()
@@ -254,12 +259,13 @@ class ThreadWorker(base.Worker):
 
                 # register the connection
                 conn.set_timeout()
-                with self._lock:
-                    self._keep.append(conn)
+                if self.poller and self._lock is not None:
+                    with self._lock:
+                        self._keep.append(conn)
 
-                    # add the socket to the event loop
-                    self.poller.register(conn.sock, selectors.EVENT_READ,
-                                         partial(self.on_client_socket_readable, conn))
+                        # add the socket to the event loop
+                        self.poller.register(conn.sock, selectors.EVENT_READ,
+                                            partial(self.on_client_socket_readable, conn))
             else:
                 self.nr_conns -= 1
                 conn.close()
