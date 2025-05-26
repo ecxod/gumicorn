@@ -52,8 +52,9 @@ class AsyncWorker(base.Worker):
                         else:
                             req.proxy_protocol_info = proxy_protocol_info
                         self.handle_request(listener_name, req, client, addr)
-            except http.errors.NoMoreData as e:
-                self.log.debug("Ignored premature client disconnection. %s", e)
+            # TODO warum ist das?
+            # except http.errors.NoMoreData as e:
+            #     self.log.debug("Ignored premature client disconnection. %s", e)
             except StopIteration as e:
                 self.log.debug("Closing connection. %s", e)
             except ssl.SSLError:
