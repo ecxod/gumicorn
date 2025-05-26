@@ -325,7 +325,10 @@ class Setting:
             self.value,
         )
 
-
+# TODO Pyright - reportAssignmentType
+#   Expression of type "type[]" cannot be assigned to declared type "type[gumicorn.config.Setting]"
+#  "type[Setting]" is incompatible with "type[Setting]"
+#   Type "type[]" cannot be assigned to type "type[gumicorn.config.Setting]"
 Setting = SettingMeta('Setting', (Setting,), {})
 
 
