@@ -201,6 +201,10 @@ if sys.platform.startswith("win"):
     def _unlink(filename):
         _waitfor(os.unlink, filename)
 else:
+# TODO - reportAssignmentType
+# Expression of type "(path: StrOrBytesPath, *, dir_fd: int | None = None) -> None" cannot be assigned to declared type "(filename: Unknown) -> None"
+#  Type "(path: StrOrBytesPath, *, dir_fd: int | None = None) -> None" cannot be assigned to type "(filename: Unknown) -> None"
+#    Parameter name mismatch: "filename" versus "path"
     _unlink = os.unlink
 
 
@@ -273,6 +277,12 @@ def close(sock):
 
 
 try:
+# TODO - reportAssignmentType
+# Expression of type "(__fd_low: int, __fd_high: int, /) -> None" cannot be assigned to declared type "(fd_low: Unknown, fd_high: Unknown) -> None"
+#  Type "(__fd_low: int, __fd_high: int, /) -> None" cannot be assigned to type "(fd_low: Unknown, fd_high: Unknown) -> None"
+#    Position-only parameter mismatch; parameter "fd_low" is not position-only
+#    Position-only parameter mismatch; parameter "fd_high" is not position-only
+#    Position-only parameter mismatch; expected 2 but received 0
     from os import closerange
 except ImportError:
     def closerange(fd_low, fd_high):
