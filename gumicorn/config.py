@@ -10,8 +10,6 @@ import shlex
 import ssl
 import sys
 import textwrap
-import util
-from typing import Type
 
 from gumicorn import __version__, util
 from gumicorn.errors import ConfigError
