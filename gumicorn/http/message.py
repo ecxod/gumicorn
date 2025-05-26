@@ -202,7 +202,7 @@ class Message:
             # two potentially dangerous cases:
             #  a) CL + TE (TE overrides CL.. only safe if the recipient sees it that way too)
             #  b) chunked HTTP/1.0 (always faulty)
-            if self.version < (1, 1):
+            if self.version and self.version < (1, 1):
                 # framing wonky, see RFC 9112 Section 6.1
                 raise InvalidHeader("TRANSFER-ENCODING", req=self)
             if content_length is not None:
@@ -237,7 +237,8 @@ class Message:
                 elif v == "keep-alive":
                     return False
                 break
-        return self.version <= (1, 0)
+        if self.version:
+            return self.version <= (1, 0)
 
 
 class Request(Message):
