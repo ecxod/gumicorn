@@ -53,9 +53,9 @@ class WSGIErrorsWrapper(io.RawIOBase):
             self.streams.append(sys.stderr)
             handlers = handlers[1:]
 
-        for h in handlers:
-            if hasattr(h, "stream"):
-                self.streams.append(h.stream)
+        # for h in handlers:
+        #     if hasattr(h, "stream"):
+        #         self.streams.append(h.stream)
 
     def write(self, data):
         for stream in self.streams:
@@ -223,8 +223,9 @@ class Response:
             return False
         if self.req.method == 'HEAD':
             return False
-        if self.status_code < 200 or self.status_code in (204, 304):
-            return False
+        if self.status_code:
+            if self.status_code < 200 or self.status_code in (204, 304):
+                return False
         return True
 
     def start_response(self, status, headers, exc_info=None):
