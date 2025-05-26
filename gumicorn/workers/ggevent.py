@@ -51,7 +51,7 @@ class GeventWorker(AsyncWorker):
             sys.exit(0)
 
     def timeout_ctx(self):
-        return gevent.Timeout(self.cfg.keepalive, False)
+        return gevent.Timeout(self.cfg.keepalive, None)
 
     def run(self):
         servers = []
