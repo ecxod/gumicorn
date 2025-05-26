@@ -5,6 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 # see https://packaging.python.org/en/latest/specifications/pyproject-toml/
 name = "gumicorn"
+version = "23.0.2"
 authors = [{name = "Christian Eichert", email = "c@zp1.net"}]
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
@@ -39,7 +40,7 @@ dependencies = [
     'importlib_metadata; python_version<"3.8"',
     "packaging",
 ]
-dynamic = ["version"]
+# dynamic = ["version"]
 
 [project.urls]
 # Homepage = "https://gunicorn.org"
