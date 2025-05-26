@@ -85,3 +85,6 @@ find = {namespaces = false}
 
 [tool.setuptools.dynamic]
 version = {attr = "gumicorn.__version__"}
+
+[tool.pyright]
+strict = false
