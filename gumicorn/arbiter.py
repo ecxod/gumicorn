@@ -92,7 +92,7 @@ class Arbiter:
             self.log = self.cfg.logger_class(app.cfg)
 
         # reopen files
-        if 'GUNICORN_PID' in os.environ:
+        if 'GUMICORN_PID' in os.environ:
             self.log.reopen_files()
 
         self.worker_class = self.cfg.worker_class
@@ -116,54 +116,65 @@ class Arbiter:
         if self.cfg.preload_app:
             self.app.wsgi()
 
+    def convertibletoint(self, variable):
+        try:
+            int_variable = int(variable)
+            return int_variable
+        except ValueError:
+            return False
+
     def start(self):
         """\
         Initialize the arbiter. Start listening and set pidfile if needed.
         """
-        self.log.info("Starting gumicorn %s", __version__)
+        if self.log :
+            self.log.info("Starting gumicorn %s", __version__)
 
-        if 'GUNICORN_PID' in os.environ:
-            self.master_pid = int(os.environ.get('GUNICORN_PID'))
-            self.proc_name = self.proc_name + ".2"
-            self.master_name = "Master.2"
+            if 'GUMICORN_PID' in os.environ:
+                gumicorn_pid = os.environ.get('GUMICORN_PID')
+                int_gumicorn_pid =self.convertibletoint(gumicorn_pid)
+                if int_gumicorn_pid is not False:
+                    self.master_pid = int_gumicorn_pid
+                    self.proc_name = self.proc_name + ".2"
+                    self.master_name = "Master.2"
 
-        self.pid = os.getpid()
-        if self.cfg.pidfile is not None:
-            pidname = self.cfg.pidfile
-            if self.master_pid != 0:
-                pidname += ".2"
-            self.pidfile = Pidfile(pidname)
-            self.pidfile.create(self.pid)
-        self.cfg.on_starting(self)
+            self.pid = os.getpid()
+            if self.cfg.pidfile is not None:
+                pidname = self.cfg.pidfile
+                if self.master_pid != 0:
+                    pidname += ".2"
+                self.pidfile = Pidfile(pidname)
+                self.pidfile.create(self.pid)
+            self.cfg.on_starting(self)
 
-        self.init_signals()
+            self.init_signals()
 
-        if not self.LISTENERS:
-            fds = None
-            # listen_fds = systemd.listen_fds()
-            # if listen_fds:
-            #     self.systemd = True
-            #     fds = range(systemd.SD_LISTEN_FDS_START,
-            #                 systemd.SD_LISTEN_FDS_START + listen_fds)
+            if not self.LISTENERS:
+                fds = None
+                # listen_fds = systemd.listen_fds()
+                # if listen_fds:
+                #     self.systemd = True
+                #     fds = range(systemd.SD_LISTEN_FDS_START,
+                #                 systemd.SD_LISTEN_FDS_START + listen_fds)
+                #elif self.master_pid:
+                if self.master_pid:
+                    fds = []
+                    for fd in os.environ.pop('GUMICORN_FD').split(','):
+                        fds.append(int(fd))
 
-            elif self.master_pid:
-                fds = []
-                for fd in os.environ.pop('GUNICORN_FD').split(','):
-                    fds.append(int(fd))
+                self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
 
-            self.LISTENERS = sock.create_sockets(self.cfg, self.log, fds)
+            listeners_str = ",".join([str(lnr) for lnr in self.LISTENERS])
+            self.log.debug("Arbiter booted")
+            self.log.info("Listening at: %s (%s)", listeners_str, self.pid)
+            self.log.info("Using worker: %s", self.cfg.worker_class_str)
+            # systemd.sd_notify("READY=1\nSTATUS=Gumicorn arbiter booted", self.log)
 
-        listeners_str = ",".join([str(lnr) for lnr in self.LISTENERS])
-        self.log.debug("Arbiter booted")
-        self.log.info("Listening at: %s (%s)", listeners_str, self.pid)
-        self.log.info("Using worker: %s", self.cfg.worker_class_str)
-        # systemd.sd_notify("READY=1\nSTATUS=Gumicorn arbiter booted", self.log)
+            # check worker class requirements
+            if hasattr(self.worker_class, "check_config"):
+                self.worker_class.check_config(self.cfg, self.log)
 
-        # check worker class requirements
-        if hasattr(self.worker_class, "check_config"):
-            self.worker_class.check_config(self.cfg, self.log)
-
-        self.cfg.when_ready(self)
+            self.cfg.when_ready(self)
 
     def init_signals(self):
         """\
@@ -180,7 +191,8 @@ class Arbiter:
             util.set_non_blocking(p)
             util.close_on_exec(p)
 
-        self.log.close_on_exec()
+        if self.log: 
+            self.log.close_on_exec()
 
         # initialize all signals
         for s in self.SIGNALS:
@@ -210,18 +222,19 @@ class Arbiter:
                     self.manage_workers()
                     continue
 
-                if sig not in self.SIG_NAMES:
+                if self.log and sig not in self.SIG_NAMES:
                     self.log.info("Ignoring unknown signal: %s", sig)
                     continue
 
                 signame = self.SIG_NAMES.get(sig)
                 handler = getattr(self, "handle_%s" % signame, None)
-                if not handler:
+                if self.log and not handler:
                     self.log.error("Unhandled signal: %s", signame)
                     continue
-                self.log.info("Handling signal: %s", signame)
-                handler()
-                self.wakeup()
+                if self.log and handler: 
+                    self.log.info("Handling signal: %s", signame)
+                    handler()
+                    self.wakeup()
         except (StopIteration, KeyboardInterrupt):
             self.halt()
         except HaltServer as inst:
@@ -229,7 +242,8 @@ class Arbiter:
         except SystemExit:
             raise
         except Exception:
-            self.log.error("Unhandled exception in main loop",
+            if self.log:
+                self.log.error("Unhandled exception in main loop",
                            exc_info=True)
             self.stop(False)
             if self.pidfile is not None:
@@ -248,7 +262,7 @@ class Arbiter:
         - Start the new worker processes with a new configuration
         - Gracefully shutdown the old worker processes
         """
-        self.log.info("Hang up: %s", self.master_name)
+        if self.log: self.log.info("Hang up: %s", self.master_name)
         self.reload()
 
     def handle_term(self):
@@ -288,7 +302,7 @@ class Arbiter:
         SIGUSR1 handling.
         Kill all workers by sending them a SIGUSR1
         """
-        self.log.reopen_files()
+        if self.log: self.log.reopen_files()
         self.kill_workers(signal.SIGUSR1)
 
     def handle_usr2(self):
@@ -302,24 +316,25 @@ class Arbiter:
 
     def handle_winch(self):
         """SIGWINCH handling"""
-        if self.cfg.daemon:
-            self.log.info("graceful stop of workers")
-            self.num_workers = 0
-            self.kill_workers(signal.SIGTERM)
-        else:
-            self.log.debug("SIGWINCH ignored. Not daemonized")
+        if self.log:
+            if self.cfg.daemon:
+                self.log.info("graceful stop of workers")
+                self.num_workers = 0
+                self.kill_workers(signal.SIGTERM)
+            else:
+                self.log.debug("SIGWINCH ignored. Not daemonized")
 
     def maybe_promote_master(self):
         if self.master_pid == 0:
             return
 
-        if self.master_pid != os.getppid():
+        if self.log and self.master_pid != os.getppid():
             self.log.info("Master has been promoted.")
             # reset master infos
             self.master_name = "Master"
             self.master_pid = 0
             self.proc_name = self.cfg.proc_name
-            del os.environ['GUNICORN_PID']
+            del os.environ['GUMICORN_PID']
             # rename the pidfile
             if self.pidfile is not None:
                 self.pidfile.rename(self.cfg.pidfile)
@@ -340,7 +355,8 @@ class Arbiter:
         """ halt arbiter """
         self.stop()
 
-        log_func = self.log.info if exit_status == 0 else self.log.error
+        if self.log is not None:
+            log_func = self.log.info if exit_status == 0 else self.log.error
         log_func("Shutting down: %s", self.master_name)
         if reason is not None:
             log_func("Reason: %s", reason)
@@ -400,11 +416,11 @@ class Arbiter:
         """\
         Relaunch the master and workers.
         """
-        if self.reexec_pid != 0:
+        if self.log and self.reexec_pid != 0:
             self.log.warning("USR2 signal ignored. Child exists.")
             return
 
-        if self.master_pid != 0:
+        if self.log and self.master_pid != 0:
             self.log.warning("USR2 signal ignored. Parent exists.")
             return
 
@@ -416,13 +432,13 @@ class Arbiter:
         self.cfg.pre_exec(self)
 
         environ = self.cfg.env_orig.copy()
-        environ['GUNICORN_PID'] = str(master_pid)
+        environ['GUMICORN_PID'] = str(master_pid)
 
         # if self.systemd:
         #     environ['LISTEN_PID'] = str(os.getpid())
         #     environ['LISTEN_FDS'] = str(len(self.LISTENERS))
         # else:
-        environ['GUNICORN_FD'] = ','.join(
+        environ['GUMICORN_FD'] = ','.join(
             str(lnr.fileno()) for lnr in self.LISTENERS)
 
         os.chdir(self.START_CTX['cwd'])
@@ -451,7 +467,8 @@ class Arbiter:
         self.setup(self.app)
 
         # reopen log files
-        self.log.reopen_files()
+        if self.log:
+            self.log.reopen_files()
 
         # do we need to change listener ?
         if old_address != self.cfg.address:
@@ -461,7 +478,7 @@ class Arbiter:
             # init new listeners
             self.LISTENERS = sock.create_sockets(self.cfg, self.log)
             listeners_str = ",".join([str(lnr) for lnr in self.LISTENERS])
-            self.log.info("Listening at: %s", listeners_str)
+            if self.log : self.log.info("Listening at: %s", listeners_str)
 
         # do some actions on reload
         self.cfg.on_reload(self)
@@ -500,7 +517,7 @@ class Arbiter:
                 continue
 
             if not worker.aborted:
-                self.log.critical("WORKER TIMEOUT (pid:%s)", pid)
+                if self.log: self.log.critical("WORKER TIMEOUT (pid:%s)", pid)
                 worker.aborted = True
                 self.kill_worker(pid, signal.SIGABRT)
             else:
@@ -522,7 +539,7 @@ class Arbiter:
                     # that it could not boot, we'll shut it down to avoid
                     # infinite start/stop cycles.
                     exitcode = status >> 8
-                    if exitcode != 0:
+                    if self.log and exitcode != 0:
                         self.log.error('Worker (pid:%s) exited with code %s', wpid, exitcode)
                     if exitcode == self.WORKER_BOOT_ERROR:
                         reason = "Worker failed to boot."
@@ -534,7 +551,7 @@ class Arbiter:
                     if exitcode > 0:
                         # If the exit code of the worker is greater than 0,
                         # let the user know.
-                        self.log.error("Worker (pid:%s) exited with code %s.",
+                        if self.log: self.log.error("Worker (pid:%s) exited with code %s.",
                                        wpid, exitcode)
                     elif status > 0:
                         # If the exit code of the worker is 0 and the status
@@ -550,7 +567,7 @@ class Arbiter:
                         # Additional hint for SIGKILL
                         if status == signal.SIGKILL:
                             msg += " Perhaps out of memory?"
-                        self.log.error(msg)
+                        if self.log: self.log.error(msg)
 
                     worker = self.WORKERS.pop(wpid, None)
                     if not worker:
@@ -578,7 +595,8 @@ class Arbiter:
         active_worker_count = len(workers)
         if self._last_logged_active_worker_count != active_worker_count:
             self._last_logged_active_worker_count = active_worker_count
-            self.log.debug("{0} workers".format(active_worker_count),
+            if self.log: 
+                self.log.debug("{0} workers".format(active_worker_count),
                            extra={"metric": "gumicorn.workers",
                                   "value": active_worker_count,
                                   "mtype": "gauge"})
@@ -603,30 +621,30 @@ class Arbiter:
         worker.pid = os.getpid()
         try:
             util._setproctitle("worker [%s]" % self.proc_name)
-            self.log.info("Booting worker with pid: %s", worker.pid)
+            if self.log: self.log.info("Booting worker with pid: %s", worker.pid)
             self.cfg.post_fork(self, worker)
             worker.init_process()
             sys.exit(0)
         except SystemExit:
             raise
         except AppImportError as e:
-            self.log.debug("Exception while loading the application",
+            if self.log: self.log.debug("Exception while loading the application",
                            exc_info=True)
             print("%s" % e, file=sys.stderr)
             sys.stderr.flush()
             sys.exit(self.APP_LOAD_ERROR)
         except Exception:
-            self.log.exception("Exception in worker process")
+            if self.log: self.log.exception("Exception in worker process")
             if not worker.booted:
                 sys.exit(self.WORKER_BOOT_ERROR)
             sys.exit(-1)
         finally:
-            self.log.info("Worker exiting (pid: %s)", worker.pid)
+            if self.log: self.log.info("Worker exiting (pid: %s)", worker.pid)
             try:
                 worker.tmp.close()
                 self.cfg.worker_exit(self, worker)
             except Exception:
-                self.log.warning("Exception during worker exit:\n%s",
+                if self.log: self.log.warning("Exception during worker exit:\n%s",
                                  traceback.format_exc())
 
     def spawn_workers(self):
