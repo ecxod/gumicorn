@@ -41,7 +41,7 @@ def serve(app, global_conf, **local_conf):
         port = 5000
     """
     config_file = global_conf['__file__']
-    gunicorn_config_file = local_conf.pop('config', None)
+    gumicorn_config_file = local_conf.pop('config', None)
 
     host = local_conf.pop('host', '')
     port = local_conf.pop('port', '')
@@ -52,21 +52,22 @@ def serve(app, global_conf, **local_conf):
 
     class PasterServerApplication(WSGIApplication):
         def load_config(self):
-            self.cfg.set("default_proc_name", config_file)
+            if self.cfg is not None:
+                self.cfg.set("default_proc_name", config_file)
 
-            if has_logging_config(config_file):
-                self.cfg.set("logconfig", config_file)
+                if has_logging_config(config_file):
+                    self.cfg.set("logconfig", config_file)
 
-            if gunicorn_config_file:
-                self.load_config_from_file(gunicorn_config_file)
-            else:
-                default_gunicorn_config_file = get_default_config_file()
-                if default_gunicorn_config_file is not None:
-                    self.load_config_from_file(default_gunicorn_config_file)
+                if gumicorn_config_file:
+                    self.load_config_from_file(gumicorn_config_file)
+                else:
+                    default_gumicorn_config_file = get_default_config_file()
+                    if default_gumicorn_config_file is not None:
+                        self.load_config_from_file(default_gumicorn_config_file)
 
-            for k, v in local_conf.items():
-                if v is not None:
-                    self.cfg.set(k.lower(), v)
+                for k, v in local_conf.items():
+                    if v is not None:
+                        self.cfg.set(k.lower(), v)
 
         def load(self):
             return app
