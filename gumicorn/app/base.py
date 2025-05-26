@@ -58,7 +58,7 @@ class BaseApplication:
 
     def reload(self):
         self.do_load_config()
-        if self.cfg.spew:
+        if self.cfg and self.cfg.spew:
             debug.spew()
 
     def wsgi(self):
@@ -83,10 +83,10 @@ class Application(BaseApplication):
     def chdir(self):
         # chdir to the configured path before loading,
         # default is the current dir
-        os.chdir(self.cfg.chdir)
+        if self.cfg : os.chdir(self.cfg.chdir)
 
         # add the path to sys.path
-        if self.cfg.chdir not in sys.path:
+        if self.cfg and self.cfg.chdir not in sys.path:
             sys.path.insert(0, self.cfg.chdir)
 
     def get_config_from_filename(self, filename):
@@ -107,7 +107,8 @@ class Application(BaseApplication):
                 spec = importlib.util.spec_from_file_location(module_name, filename, loader=loader_)
             mod = importlib.util.module_from_spec(spec)
             sys.modules[module_name] = mod
-            spec.loader.exec_module(mod)
+            if spec and spec.loader is not None: 
+                spec.loader.exec_module(mod)
         except Exception:
             print("Failed to read config file: %s" % filename, file=sys.stderr)
             traceback.print_exc()
@@ -137,14 +138,15 @@ class Application(BaseApplication):
 
         for k, v in cfg.items():
             # Ignore unknown names
-            if k not in self.cfg.settings:
-                continue
-            try:
-                self.cfg.set(k.lower(), v)
-            except Exception:
-                print("Invalid value for %s: %s\n" % (k, v), file=sys.stderr)
-                sys.stderr.flush()
-                raise
+            if self.cfg: 
+                if k not in self.cfg.settings:
+                    continue
+                try:
+                    self.cfg.set(k.lower(), v)
+                except Exception:
+                    print("Invalid value for %s: %s\n" % (k, v), file=sys.stderr)
+                    sys.stderr.flush()
+                    raise
 
         return cfg
 
@@ -152,84 +154,86 @@ class Application(BaseApplication):
         return self.load_config_from_module_name_or_filename(location=filename)
 
     def load_config(self):
-        # parse console args
-        parser = self.cfg.parser()
-        args = parser.parse_args()
+        if self.cfg is not None:
+            # parse console args
+            parser = self.cfg.parser()
+            args = parser.parse_args()
 
-        # optional settings from apps
-        cfg = self.init(parser, args, args.args)
+            # optional settings from apps
+            cfg = self.init(parser, args, args.args)
 
-        # set up import paths and follow symlinks
-        self.chdir()
+            # set up import paths and follow symlinks
+            self.chdir()
 
-        # Load up the any app specific configuration
-        if cfg:
-            for k, v in cfg.items():
+            # Load up the any app specific configuration
+            if cfg:
+                for k, v in cfg.items():
+                    self.cfg.set(k.lower(), v)
+
+            env_args = parser.parse_args(self.cfg.get_cmd_args_from_env())
+
+            if args.config:
+                self.load_config_from_file(args.config)
+            elif env_args.config:
+                self.load_config_from_file(env_args.config)
+            else:
+                default_config = get_default_config_file()
+                if default_config is not None:
+                    self.load_config_from_file(default_config)
+
+            # Load up environment configuration
+            for k, v in vars(env_args).items():
+                if v is None:
+                    continue
+                if k == "args":
+                    continue
                 self.cfg.set(k.lower(), v)
 
-        env_args = parser.parse_args(self.cfg.get_cmd_args_from_env())
+            # Lastly, update the configuration with any command line settings.
+            for k, v in vars(args).items():
+                if v is None:
+                    continue
+                if k == "args":
+                    continue
+                self.cfg.set(k.lower(), v)
 
-        if args.config:
-            self.load_config_from_file(args.config)
-        elif env_args.config:
-            self.load_config_from_file(env_args.config)
-        else:
-            default_config = get_default_config_file()
-            if default_config is not None:
-                self.load_config_from_file(default_config)
-
-        # Load up environment configuration
-        for k, v in vars(env_args).items():
-            if v is None:
-                continue
-            if k == "args":
-                continue
-            self.cfg.set(k.lower(), v)
-
-        # Lastly, update the configuration with any command line settings.
-        for k, v in vars(args).items():
-            if v is None:
-                continue
-            if k == "args":
-                continue
-            self.cfg.set(k.lower(), v)
-
-        # current directory might be changed by the config now
-        # set up import paths and follow symlinks
-        self.chdir()
+            # current directory might be changed by the config now
+            # set up import paths and follow symlinks
+            self.chdir()
 
     def run(self):
-        if self.cfg.print_config:
-            print(self.cfg)
+        if self.cfg is not None:
+            if self.cfg.print_config:
+                print(self.cfg)
 
-        if self.cfg.print_config or self.cfg.check_config:
-            try:
-                self.load()
-            except Exception:
-                msg = "\nError while loading the application:\n"
-                print(msg, file=sys.stderr)
-                traceback.print_exc()
-                sys.stderr.flush()
-                sys.exit(1)
-            sys.exit(0)
+            if self.cfg.print_config or self.cfg.check_config:
+                try:
+                    self.load()
+                except Exception:
+                    msg = "\nError while loading the application:\n"
+                    print(msg, file=sys.stderr)
+                    traceback.print_exc()
+                    sys.stderr.flush()
+                    sys.exit(1)
+                sys.exit(0)
 
-        if self.cfg.spew:
-            debug.spew()
+            if self.cfg.spew:
+                debug.spew()
 
-        if self.cfg.daemon:
-            # if os.environ.get('NOTIFY_SOCKET'):
-            #     msg = "Warning: you shouldn't specify `daemon = True`" \
-            #           " when launching by systemd with `Type = notify`"
-            #     print(msg, file=sys.stderr, flush=True)
+            if self.cfg.daemon:
+                # if os.environ.get('NOTIFY_SOCKET'):
+                #     msg = "Warning: you shouldn't specify `daemon = True`" \
+                #           " when launching by systemd with `Type = notify`"
+                #     print(msg, file=sys.stderr, flush=True)
 
-            util.daemonize(self.cfg.enable_stdio_inheritance)
+                util.daemonize(self.cfg.enable_stdio_inheritance)
 
-        # set python paths
-        if self.cfg.pythonpath:
-            paths = self.cfg.pythonpath.split(",")
-            for path in paths:
-                pythonpath = os.path.abspath(path)
-                if pythonpath not in sys.path:
-                    sys.path.insert(0, pythonpath)
+            # set python paths
+            if self.cfg.pythonpath:
+                paths = self.cfg.pythonpath.split(",")
+                for path in paths:
+                    pythonpath = os.path.abspath(path)
+                    if pythonpath not in sys.path:
+                        sys.path.insert(0, pythonpath)
 
-        super().run()
+            super().run()
