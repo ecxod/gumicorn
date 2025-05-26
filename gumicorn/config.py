@@ -241,7 +241,7 @@ class SettingMeta(type):
         attrs["validator"] = staticmethod(attrs.get("validator", lambda x: x))
 
         new_class = super_new(cls, name, bases, attrs)
-        new_class.fmt_desc(attrs.get("desc", ""))
+        new_class.fmt_desc(cls, attrs.get("desc", ""))
         KNOWN_SETTINGS.append(new_class)
         return new_class
 
