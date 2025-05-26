@@ -99,8 +99,8 @@ class TornadoWorker(Worker):
             for callback in self.callbacks:
                 callback.start()
         else:
-            PeriodicCallback(self.watchdog, 1000, io_loop=self.ioloop).start()
-            PeriodicCallback(self.heartbeat, 1000, io_loop=self.ioloop).start()
+            PeriodicCallback(self.watchdog, 1000, jitter=self.ioloop).start()
+            PeriodicCallback(self.heartbeat, 1000, jitter=self.ioloop).start()
 
         # Ensure app is either tornado.web.Application or WSGIApplication
         app: Union[tornado.web.Application, tornado.wsgi.WSGIApplication] = self.wsgi
