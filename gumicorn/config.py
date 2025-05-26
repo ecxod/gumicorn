@@ -446,9 +446,9 @@ def validate_callable(arity):
                                 "" % (obj_name, mod_name))
         if not callable(val):
             raise TypeError("Value is not callable: %s" % val)
-        # FIXME Eichert 2026-05-26
-        # if arity != -1 and arity != util.get_arity(val):
-        #     raise TypeError("Value must have an arity of: %s" % arity)
+        # FIXME Eichert 2026-05-26 - warum dard da kein "self" sein ?
+        if arity != -1 and arity != util.get_arity(val):
+            raise TypeError("Value %s must have an arity of: %s" % (val, arity))
         return val
     return _validate_callable
 
@@ -493,7 +493,7 @@ def validate_post_request(val):
     elif largs == 2:
         return lambda worker, req, _e, _r: val(worker, req)
     else:
-        raise TypeError("Value must have an arity of: 4")
+        raise TypeError("Value %s must have an arity of: 4" % val)
 
 
 def validate_chdir(val):
@@ -1755,7 +1755,7 @@ class OnStarting(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def on_starting(self, server):
+    def on_starting(server):
         pass
     default = staticmethod(on_starting)
     desc = """\
@@ -1771,7 +1771,7 @@ class OnReload(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def on_reload(self, server):
+    def on_reload(server):
         pass
     default = staticmethod(on_reload)
     desc = """\
@@ -1787,7 +1787,7 @@ class WhenReady(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def when_ready(self, server):
+    def when_ready(server):
         pass
     default = staticmethod(when_ready)
     desc = """\
@@ -1803,7 +1803,7 @@ class Prefork(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def pre_fork(self, server, worker):
+    def pre_fork(server, worker):
         pass
     default = staticmethod(pre_fork)
     desc = """\
@@ -1820,7 +1820,7 @@ class Postfork(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def post_fork(self, server, worker):
+    def post_fork(server, worker):
         pass
     default = staticmethod(post_fork)
     desc = """\
@@ -1837,7 +1837,7 @@ class PostWorkerInit(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def post_worker_init(self, worker):
+    def post_worker_init(worker):
         pass
 
     default = staticmethod(post_worker_init)
@@ -1855,7 +1855,7 @@ class WorkerInt(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def worker_int(self, worker):
+    def worker_int(worker):
         pass
 
     default = staticmethod(worker_int)
@@ -1873,7 +1873,7 @@ class WorkerAbort(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def worker_abort(self, worker):
+    def worker_abort(worker):
         pass
 
     default = staticmethod(worker_abort)
@@ -1893,7 +1893,7 @@ class PreExec(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def pre_exec(self, server):
+    def pre_exec(server):
         pass
     default = staticmethod(pre_exec)
     desc = """\
@@ -1909,7 +1909,7 @@ class PreRequest(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def pre_request(self, worker, req):
+    def pre_request(worker, req):
         worker.log.debug("%s %s", req.method, req.path)
     default = staticmethod(pre_request)
     desc = """\
@@ -1926,7 +1926,7 @@ class PostRequest(Setting):
     validator = validate_post_request
     type = callable
 
-    def post_request(self, worker, req, environ, resp):
+    def post_request(worker, req, environ, resp):
         pass
     default = staticmethod(post_request)
     desc = """\
@@ -1943,7 +1943,7 @@ class ChildExit(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def child_exit(self, server, worker):
+    def child_exit(server, worker):
         pass
     default = staticmethod(child_exit)
     desc = """\
@@ -1962,7 +1962,7 @@ class WorkerExit(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def worker_exit(self, server, worker):
+    def worker_exit(server, worker):
         pass
     default = staticmethod(worker_exit)
     desc = """\
@@ -1979,7 +1979,7 @@ class NumWorkersChanged(Setting):
     validator = validate_callable(3)
     type = callable
 
-    def nworkers_changed(self, server, new_value, old_value):
+    def nworkers_changed(server, new_value, old_value):
         pass
     default = staticmethod(nworkers_changed)
     desc = """\
@@ -1998,7 +1998,7 @@ class OnExit(Setting):
     section = "Server Hooks"
     validator = validate_callable(1)
 
-    def on_exit(self, server):
+    def on_exit(server):
         pass
 
     default = staticmethod(on_exit)
@@ -2015,7 +2015,7 @@ class NewSSLContext(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def ssl_context(self, config, default_ssl_context_factory):
+    def ssl_context(config, default_ssl_context_factory):
         return default_ssl_context_factory()
 
     default = staticmethod(ssl_context)
