@@ -401,14 +401,14 @@ class Logger:
                     finally:
                         handler.release()
 
-    def _get_gunicorn_handler(self, log):
+    def _get_gumicorn_handler(self, log):
         for h in log.handlers:
-            if getattr(h, "_gunicorn", False):
+            if getattr(h, "_gumicorn", False):
                 return h
 
     def _set_handler(self, log, output, fmt, stream=None):
         # remove previous gumicorn log handler
-        h = self._get_gunicorn_handler(log)
+        h = self._get_gumicorn_handler(log)
         if h:
             log.handlers.remove(h)
 
@@ -427,7 +427,7 @@ class Logger:
                     pass
 
             h.setFormatter(fmt)
-            h._gunicorn = True
+            h._gumicorn = True
             log.addHandler(h)
 
     def _set_syslog_handler(self, log, cfg, fmt, name):
@@ -453,7 +453,7 @@ class Logger:
                                            facility=facility, socktype=socktype)
 
         h.setFormatter(fmt)
-        h._gunicorn = True
+        h._gumicorn = True
         log.addHandler(h)
 
     def _get_user(self, environ):
