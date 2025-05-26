@@ -55,7 +55,7 @@ class ChunkedReader:
 
     def parse_chunked(self, unreader):
         (size, rest) = self.parse_chunk_size(unreader)
-        while size > 0:
+        while rest and size > 0:
             while isinstance(rest, bytes) and size > len(rest):
                 size -= len(rest)
                 yield rest
