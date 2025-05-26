@@ -20,7 +20,7 @@ class WorkerTmp:
         fdir = cfg.worker_tmp_dir
         if fdir and not os.path.isdir(fdir):
             raise RuntimeError("%s doesn't exist. Can't create workertmp." % fdir)
-        fd, name = tempfile.mkstemp(prefix="wgunicorn-", dir=fdir)
+        fd, name = tempfile.mkstemp(prefix="wgumicorn-", dir=fdir)
         os.umask(old_umask)
 
         # change the owner and group of the file if the worker will run as
