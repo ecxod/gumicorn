@@ -16,6 +16,8 @@ import shlex
 import ssl
 import sys
 import textwrap
+import util
+from typing import Type
 
 from gumicorn import __version__, util
 from gumicorn.errors import ConfigError
@@ -77,8 +79,8 @@ class Config:
         self.settings[name].set(value)
 
     def get_cmd_args_from_env(self):
-        if 'GUNICORN_CMD_ARGS' in self.env_orig:
-            return shlex.split(self.env_orig['GUNICORN_CMD_ARGS'])
+        if 'GUMICORN_CMD_ARGS' in self.env_orig:
+            return shlex.split(self.env_orig['GUMICORN_CMD_ARGS'])
         return []
 
     def parser(self):
@@ -242,14 +244,14 @@ class SettingMeta(type):
             return super_new(cls, name, bases, attrs)
 
         attrs["order"] = len(KNOWN_SETTINGS)
-        attrs["validator"] = staticmethod(attrs["validator"])
+        attrs["validator"] = staticmethod(attrs.get("validator", lambda x: x))
 
         new_class = super_new(cls, name, bases, attrs)
         new_class.fmt_desc(attrs.get("desc", ""))
         KNOWN_SETTINGS.append(new_class)
         return new_class
 
-    def fmt_desc(cls, desc):
+    def fmt_desc(self, cls, desc):
         desc = textwrap.dedent(desc).strip()
         setattr(cls, "desc", desc)
         setattr(cls, "short", desc.splitlines()[0])
@@ -269,6 +271,7 @@ class Setting:
     desc = None
     nargs = None
     const = None
+    order = None
 
     def __init__(self):
         if self.default is not None:
@@ -498,17 +501,13 @@ def validate_post_request(val):
 
 
 def validate_chdir(val):
-    # valid if the value is a string
-    val = validate_string(val)
-
     # transform relative paths
-    path = os.path.abspath(os.path.normpath(os.path.join(util.getcwd(), val)))
-
-    # test if the path exists
-    if not os.path.exists(path):
-        raise ConfigError("can't chdir to %r" % val)
-
-    return path
+    if val == validate_string(val):
+        os_path_join = os.path.join(util.getcwd(), val)
+        path = os.path.abspath(os.path.normpath(os_path_join ))
+        return path
+    else:
+        return None
 
 
 def validate_statsd_address(val):
@@ -1760,7 +1759,7 @@ class OnStarting(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def on_starting(server):
+    def on_starting(self, server):
         pass
     default = staticmethod(on_starting)
     desc = """\
@@ -1776,7 +1775,7 @@ class OnReload(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def on_reload(server):
+    def on_reload(self, server):
         pass
     default = staticmethod(on_reload)
     desc = """\
@@ -1792,7 +1791,7 @@ class WhenReady(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def when_ready(server):
+    def when_ready(self, server):
         pass
     default = staticmethod(when_ready)
     desc = """\
@@ -1808,7 +1807,7 @@ class Prefork(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def pre_fork(server, worker):
+    def pre_fork(self, server, worker):
         pass
     default = staticmethod(pre_fork)
     desc = """\
@@ -1825,7 +1824,7 @@ class Postfork(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def post_fork(server, worker):
+    def post_fork(self, server, worker):
         pass
     default = staticmethod(post_fork)
     desc = """\
@@ -1842,7 +1841,7 @@ class PostWorkerInit(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def post_worker_init(worker):
+    def post_worker_init(self, worker):
         pass
 
     default = staticmethod(post_worker_init)
@@ -1860,7 +1859,7 @@ class WorkerInt(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def worker_int(worker):
+    def worker_int(self, worker):
         pass
 
     default = staticmethod(worker_int)
@@ -1878,7 +1877,7 @@ class WorkerAbort(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def worker_abort(worker):
+    def worker_abort(self, worker):
         pass
 
     default = staticmethod(worker_abort)
@@ -1898,7 +1897,7 @@ class PreExec(Setting):
     validator = validate_callable(1)
     type = callable
 
-    def pre_exec(server):
+    def pre_exec(self, server):
         pass
     default = staticmethod(pre_exec)
     desc = """\
@@ -1914,7 +1913,7 @@ class PreRequest(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def pre_request(worker, req):
+    def pre_request(self, worker, req):
         worker.log.debug("%s %s", req.method, req.path)
     default = staticmethod(pre_request)
     desc = """\
@@ -1931,7 +1930,7 @@ class PostRequest(Setting):
     validator = validate_post_request
     type = callable
 
-    def post_request(worker, req, environ, resp):
+    def post_request(self, worker, req, environ, resp):
         pass
     default = staticmethod(post_request)
     desc = """\
@@ -1948,7 +1947,7 @@ class ChildExit(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def child_exit(server, worker):
+    def child_exit(self, server, worker):
         pass
     default = staticmethod(child_exit)
     desc = """\
@@ -1967,7 +1966,7 @@ class WorkerExit(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def worker_exit(server, worker):
+    def worker_exit(self, server, worker):
         pass
     default = staticmethod(worker_exit)
     desc = """\
@@ -1984,7 +1983,7 @@ class NumWorkersChanged(Setting):
     validator = validate_callable(3)
     type = callable
 
-    def nworkers_changed(server, new_value, old_value):
+    def nworkers_changed(self, server, new_value, old_value):
         pass
     default = staticmethod(nworkers_changed)
     desc = """\
@@ -2003,7 +2002,7 @@ class OnExit(Setting):
     section = "Server Hooks"
     validator = validate_callable(1)
 
-    def on_exit(server):
+    def on_exit(self, server):
         pass
 
     default = staticmethod(on_exit)
@@ -2020,7 +2019,7 @@ class NewSSLContext(Setting):
     validator = validate_callable(2)
     type = callable
 
-    def ssl_context(config, default_ssl_context_factory):
+    def ssl_context(self, config, default_ssl_context_factory):
         return default_ssl_context_factory()
 
     default = staticmethod(ssl_context)
