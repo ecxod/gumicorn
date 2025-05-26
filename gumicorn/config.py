@@ -446,8 +446,9 @@ def validate_callable(arity):
                                 "" % (obj_name, mod_name))
         if not callable(val):
             raise TypeError("Value is not callable: %s" % val)
-        if arity != -1 and arity != util.get_arity(val):
-            raise TypeError("Value must have an arity of: %s" % arity)
+        # FIXME Eichert 2026-05-26
+        # if arity != -1 and arity != util.get_arity(val):
+        #     raise TypeError("Value must have an arity of: %s" % arity)
         return val
     return _validate_callable
 
