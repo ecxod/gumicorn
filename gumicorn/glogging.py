@@ -7,7 +7,7 @@ import binascii
 import json
 import time
 import logging
-logging.Logger.manager.emittedNoHandlerWarning = 1  # noqa
+logging.Logger.manager.emittedNoHandlerWarning = True  # noqa
 from logging.config import dictConfig
 from logging.config import fileConfig
 import os
@@ -427,7 +427,8 @@ class Logger:
                     pass
 
             h.setFormatter(fmt)
-            h._gumicorn = True
+            if hasattr(h, "_gumicorn"):
+                h._gumicorn = True
             log.addHandler(h)
 
     def _set_syslog_handler(self, log, cfg, fmt, name):
