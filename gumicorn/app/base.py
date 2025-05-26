@@ -105,10 +105,11 @@ class Application(BaseApplication):
                 util.warn(msg)
                 loader_ = importlib.machinery.SourceFileLoader(module_name, filename)
                 spec = importlib.util.spec_from_file_location(module_name, filename, loader=loader_)
-            mod = importlib.util.module_from_spec(spec)
-            sys.modules[module_name] = mod
-            if spec and spec.loader is not None: 
-                spec.loader.exec_module(mod)
+            if spec is not None:
+                mod = importlib.util.module_from_spec(spec)
+                sys.modules[module_name] = mod
+                if spec and spec.loader is not None: 
+                    spec.loader.exec_module(mod)
         except Exception:
             print("Failed to read config file: %s" % filename, file=sys.stderr)
             traceback.print_exc()
