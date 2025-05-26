@@ -99,13 +99,13 @@ class TornadoWorker(Worker):
             for callback in self.callbacks:
                 callback.start()
         else:
-            PeriodicCallback(self.watchdog, 1000, jitter=self.ioloop).start()
-            PeriodicCallback(self.heartbeat, 1000, jitter=self.ioloop).start()
+            PeriodicCallback(self.watchdog, 1000).start()
+            PeriodicCallback(self.heartbeat, 1000).start()
 
         # Ensure app is either tornado.web.Application or WSGIApplication
         app: Union[tornado.web.Application, tornado.wsgi.WSGIApplication] = self.wsgi
-        if not isinstance(app, tornado.web.Application):
-            app = WSGIContainer(self.wsgi)
+        # if isinstance(app, tornado.web.Application):
+        #     app = WSGIContainer(self.wsgi)
 
         if tornado.version_info[0] < 6:
             if not isinstance(app, tornado.web.Application) or \
@@ -134,7 +134,7 @@ class TornadoWorker(Worker):
 
             class _HTTPServer(tornado.httpserver.HTTPServer):
 
-                def on_close(instance, server_conn):
+                def on_close(self, instance, server_conn):
                     self.handle_request()
                     super().on_close(server_conn)
 
