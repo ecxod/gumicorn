@@ -18,7 +18,7 @@ before_script:
 run:
   script:
     - pip install .
-    - cd gumicorn
+    #- cd gumicorn
     - python -m build
   artifacts:
     paths:
