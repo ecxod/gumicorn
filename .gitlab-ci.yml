@@ -2,6 +2,8 @@
 image: python:latest
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PACKAGE_VERSION: "23.0.4"
+  DEB_PACKAGE_NAME: "gumicorn_${PACKAGE_VERSION}_all"
 cache:
   paths:
   - .cache/pip
@@ -9,6 +11,7 @@ cache:
 before_script:
 - python --version
 - pip --version
+- apt-get update && apt-get install -y dpkg-dev
 - pip install --upgrade pip
 - pip install virtualenv
 - test -d venv || virtualenv venv
@@ -19,6 +22,27 @@ run:
   - cd gumicorn
   - pip install .
   - python -m build
+  - mkdir -p ${DEB_PACKAGE_NAME}/DEBIAN
+  - mkdir -p ${DEB_PACKAGE_NAME}/usr/lib/python3/dist-packages
+  - mkdir -p ${DEB_PACKAGE_NAME}/usr/bin
+  - pip install dist/gumicorn-${PACKAGE_VERSION}-py3-none-any.whl --target ${DEB_PACKAGE_NAME}/usr/lib/python3/dist-packages
+  - echo '#!/bin/bash' > ${DEB_PACKAGE_NAME}/usr/bin/gumicorn
+  - echo 'python3 -m gumicorn "$@"' >> ${DEB_PACKAGE_NAME}/usr/bin/gumicorn
+  - chmod +x ${DEB_PACKAGE_NAME}/usr/bin/gumicorn
+  - |
+    cat > ${DEB_PACKAGE_NAME}/DEBIAN/control << EOF
+    Package: gumicorn
+    Version: ${PACKAGE_VERSION}
+    Section: python
+    Priority: optional
+    Architecture: all
+    Depends: python3 (>= 3.7)
+    Maintainer: Christian Eichert <c@zp1.net>
+    Description: Gumicorn Python Package
+      A custom Python package for gumicorn.
+    EOF
+  - dpkg-deb --build --root-owner-group ${DEB_PACKAGE_NAME}
   artifacts:
     paths:
-    - gumicorn/dist/*
+      - ${DEB_PACKAGE_NAME}.deb
+      - gumicorn/dist/*
