@@ -1,3 +1,13 @@
+<a href="https://salsa.debian.org/ecxod/gumicorn/" target="_new">
+<img src="https://salsa.debian.org/ecxod/gumicorn/-/badges/release.svg">
+</a>
+<a href="https://salsa.debian.org/ecxod/gumicorn/" target="_new">
+<img src="https://salsa.debian.org/ecxod/gumicorn/badges/master/pipeline.svg">
+</a>
+
+/coverage.svg
+
+
 # Welcome to gumicorn
 
 WSGI HTTP Server for UNIX
