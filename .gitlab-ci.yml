@@ -42,7 +42,10 @@ run:
       A custom Python package for gumicorn.
     EOF
   - dpkg-deb --build --root-owner-group ${DEB_PACKAGE_NAME}
+  - cp ${DEB_PACKAGE_NAME}.deb ../
+  - ls -l ../
   artifacts:
     paths:
-      - ${DEB_PACKAGE_NAME}.deb
+      - gumicorn/${DEB_PACKAGE_NAME}.deb
       - gumicorn/dist/*
+
