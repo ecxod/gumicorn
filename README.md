@@ -5,8 +5,6 @@
 <img src="https://salsa.debian.org/ecxod/gumicorn/badges/master/pipeline.svg">
 </a>
 
-/coverage.svg
-
 
 # Welcome to gumicorn
 
