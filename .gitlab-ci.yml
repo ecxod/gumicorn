@@ -1,25 +1,24 @@
+---
 image: python:latest
-
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-
 cache:
   paths:
-    - .cache/pip
-
+  - .cache/pip
+  - venv/
 before_script:
-  - python --version
-  - pip --version
-  - pip install --upgrade pip
-  - pip install virtualenv
-  - test -d venv || virtualenv venv
-  - source venv/bin/activate
-  - pip install build
+- python --version
+- pip --version
+- pip install --upgrade pip
+- pip install virtualenv
+- test -d venv || virtualenv venv
+- source venv/bin/activate
+- pip install build
 run:
   script:
-    - pip install .
-    #- cd gumicorn
-    - python -m build
+  - cd gumicorn
+  - pip install .
+  - python -m build
   artifacts:
     paths:
-      - build/*
+    - gumicorn/dist/*
