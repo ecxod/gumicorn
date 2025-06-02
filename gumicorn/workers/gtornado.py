@@ -1,6 +1,6 @@
 import os
 import sys
-from typing import Callable, Union, Any
+from typing import Callable, Union, Any, cast
 from collections.abc import Iterable
 
 try:
@@ -24,7 +24,7 @@ WSGIApp = Callable[[dict[str, Any], Callable[..., Any]], Iterable[bytes]]
 # them on our side, and use stop() on them when stopping the worker.
 # See https://www.tornadoweb.org/en/stable/releases/v5.0.0.html#backwards-compatibility-notes
 # for more details.
-TORNADO5 = tornado.version_info >= (5, 0, 0)
+TORNADO5 = cast(tuple[int, int, int],tornado.version_info) >= (5, 0, 0)
 
 
 class TornadoWorker(Worker):
