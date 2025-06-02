@@ -8,11 +8,13 @@ cache:
     - .cache/pip
 
 before_script:
-  - python --version ; pip --version  # For debugging
+  - python --version
+  - pip --version
+  - pip install --upgrade pip
   - pip install virtualenv
-  - virtualenv venv
+  - test -d venv || virtualenv venv
   - source venv/bin/activate
-
+  - pip install build
 run:
   script:
     - pip install .
