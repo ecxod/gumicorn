@@ -1,0 +1,23 @@
+image: python:latest
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - python --version ; pip --version  # For debugging
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+
+run:
+  script:
+    - pip install .
+    - cd gumicorn
+    - python -m build
+  artifacts:
+    paths:
+      - build/*
