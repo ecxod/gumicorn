@@ -18,3 +18,25 @@ python -m build
 
 ```
 you find the package in dist/
+
+```
+<repository_root>/
+├── gumicorn/
+│   ├── dist/
+│   │   ├── gumicorn-23.0.4-py3-none-any.whl
+│   │   ├── gumicorn-23.0.4.tar.gz
+│   ├── gumicorn_23.0.4_all/
+│   │   ├── DEBIAN/
+│   │   │   ├── control
+│   │   ├── usr/
+│   │   │   ├── bin/
+│   │   │   │   ├── gumicorn
+│   │   │   ├── lib/
+│   │   │   │   ├── python3/
+│   │   │   │   │   ├── dist-packages/
+│   │   │   │   │   │   ├── gumicorn/
+│   │   │   │   │   │   ├── ...
+│   ├── gumicorn_23.0.4_all.deb
+├── .gitlab-ci.yml
+
+```
