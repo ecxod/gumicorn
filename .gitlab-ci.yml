@@ -2,7 +2,7 @@
 image: python:latest
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  PACKAGE_VERSION: "23.0.4"
+  PACKAGE_VERSION: "${CI_COMMIT_TAG#v}"
   DEB_PACKAGE_NAME: "gumicorn_${PACKAGE_VERSION}_all"
 cache:
   paths:
@@ -16,12 +16,14 @@ before_script:
 - pip install virtualenv
 - test -d venv || virtualenv venv
 - source venv/bin/activate
-- pip install build
+- pip install build sentry-sdk python-dotenv
 run:
   script:
   - cd gumicorn
   - pip install .
   - python -m build
+  # Debug Sentry
+  - python -c "import os; print('GLITCHTIP_DSN is set:', bool(os.getenv('GLITCHTIP_DSN')))"
   - mkdir -p ${DEB_PACKAGE_NAME}/DEBIAN
   - mkdir -p ${DEB_PACKAGE_NAME}/usr/lib/python3/dist-packages
   - mkdir -p ${DEB_PACKAGE_NAME}/usr/bin
