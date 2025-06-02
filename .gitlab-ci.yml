@@ -44,6 +44,10 @@ run:
   - dpkg-deb --build --root-owner-group ${DEB_PACKAGE_NAME}
   - cp ${DEB_PACKAGE_NAME}.deb ../
   - ls -l ../
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'  # Trigger only for tags
+      when: always
+    - when: never
   artifacts:
     paths:
       - gumicorn/${DEB_PACKAGE_NAME}.deb
