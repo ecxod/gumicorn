@@ -16,6 +16,8 @@ sentry_sdk.init(
     environment="production" if os.getenv("CI") else "development"
 )
 
+division_by_zero = 1 / 0
+
 version_info = (23, 0, 0)
 __version__ = ".".join([str(v) for v in version_info])
 SERVER = "gumicorn"
